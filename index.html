@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>מעקב משקל פרימיום</title>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --bg-color: #F4F7F6;
+            --text-dark: #2E3135;
+            --text-light: #8E9297;
+            --card-bg: #FFFFFF;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Assistant', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #e0e5e3;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* דימוי מסך טלפון גם כשפותחים במחשב */
+        .app-container {
+            width: 100%;
+            max-width: 450px;
+            height: 100vh;
+            background: linear-gradient(180deg, #E8F5E9 0%, var(--bg-color) 40%);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        .tab-content {
+            display: none;
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            padding-bottom: 90px; /* מקום לתפריט התחתון */
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* עיצוב טבעת ההתקדמות המרכזית */
+        .progress-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .progress-ring {
+            width: 220px;
+            height: 220px;
+            transform: rotate(-90deg);
+        }
+
+        .progress-ring circle {
+            fill: none;
+            stroke-width: 14;
+            stroke-linecap: round;
+        }
+
+        .progress-ring .bg-circle {
+            stroke: #ffffff;
+            stroke-width: 14;
+        }
+
+        .progress-ring .fg-circle {
+            stroke: var(--primary-color);
+            stroke-dasharray: 628; /* היקף המעגל (2 * pi * r) */
+            stroke-dashoffset: 628;
+            transition: stroke-dashoffset 1.5s ease-out;
+        }
+
+        .progress-text {
+            position: absolute;
+            text-align: center;
+            color: var(--text-dark);
+        }
+
+        .progress-text h1 {
+            font-size: 54px;
+            font-weight: 700;
+            line-height: 1.1;
+        }
+
+        .progress-text p {
+            font-size: 16px;
+            color: var(--text-light);
+            font-weight: 600;
+        }
+
+        /* כרטיסיות הנתונים (Cards UI) */
+        .cards-grid {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 15px 10px;
+            flex: 1;
+            text-align: center;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.04);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .stat-card .material-icons-round {
+            color: var(--primary-color);
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .stat-card h3 {
+            font-size: 20px;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+        }
+
+        .stat-card p {
+            font-size: 13px;
+            color: var(--text-light);
+            font-weight: 600;
+        }
+
+        /* כפתור שקילה מרחף (FAB) */
+        .fab {
+            position: absolute;
+            bottom: 90px;
+            left: 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        /* תפריט ניווט תחתון */
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 70px;
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.05);
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            z-index: 20;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #bdc3c7;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .nav-item.active {
+            color: var(--primary-color);
+        }
+
+        .nav-item .material-icons-round {
+            font-size: 26px;
+            margin-bottom: 4px;
+        }
+
+        .nav-item span {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* פופ-אפ להזנת שקילה */
+        .modal-overlay {
+            display: none;
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 30;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 24px;
+            border-radius: 20px;
+            width: 80%;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .modal-content input {
+            width: 100%;
+            padding: 12px;
+            margin: 20px 0;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            font-size: 18px;
+            text-align: center;
+            background: var(--bg-color);
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 12px;
+            border: none;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .btn-cancel { background: #f1f2f6; color: var(--text-light); }
+        .btn-save { background: var(--primary-color); color: white; }
+
+        /* סגנון למסכי פלייסחולדר */
+        .placeholder-screen {
+            display: flex;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: var(--text-light);
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <div id="tab-dashboard" class="tab-content active">
+            
+            <div class="progress-section">
+                <svg class="progress-ring">
+                    <circle class="bg-circle" cx="110" cy="110" r="100"></circle>
+                    <circle class="fg-circle" cx="110" cy="110" r="100" id="progress-circle"></circle>
+                </svg>
+                <div class="progress-text">
+                    <p>נותרו ליעד</p>
+                    <h1 id="remaining-weight">--</h1>
+                    <p>ק"ג</p>
+                </div>
+            </div>
+
+            <div class="cards-grid">
+                <div class="stat-card">
+                    <span class="material-icons-round">monitor_weight</span>
+                    <h3 id="bmi-val">--</h3>
+                    <p>BMI נוכחי</p>
+                </div>
+                <div class="stat-card">
+                    <span class="material-icons-round">trending_down</span>
+                    <h3 id="lost-val">--</h3>
+                    <p>סך ירידה</p>
+                </div>
+                <div class="stat-card">
+                    <span class="material-icons-round">check_circle</span>
+                    <h3 id="percent-val">--</h3>
+                    <p>הושלם</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab-analytics" class="tab-content">
+            <div class="placeholder-screen">מסך גרפים וניתוח נתונים בהכנה...</div>
+        </div>
+
+        <div id="tab-journey" class="tab-content">
+            <div class="placeholder-screen">מסך המסע שלי וארון גביעים בהכנה...</div>
+        </div>
+
+        <div id="tab-profile" class="tab-content">
+            <div class="placeholder-screen">פרופיל אישי: גיל 25 | גובה 190 ס"מ</div>
+        </div>
+
+        <button class="fab" id="fab-btn" onclick="openModal()">
+            <span class="material-icons-round">add</span>
+            שקילה
+        </button>
+
+        <div class="bottom-nav">
+            <div class="nav-item active" onclick="switchTab('dashboard', this)">
+                <span class="material-icons-round">dashboard</span>
+                <span>ראשי</span>
+            </div>
+            <div class="nav-item" onclick="switchTab('analytics', this)">
+                <span class="material-icons-round">analytics</span>
+                <span>ניתוח</span>
+            </div>
+            <div class="nav-item" onclick="switchTab('journey', this)">
+                <span class="material-icons-round">emoji_events</span>
+                <span>המסע</span>
+            </div>
+            <div class="nav-item" onclick="switchTab('profile', this)">
+                <span class="material-icons-round">person</span>
+                <span>פרופיל</span>
+            </div>
+        </div>
+
+        <div class="modal-overlay" id="weight-modal">
+            <div class="modal-content">
+                <h3>הזנת שקילה חדשה</h3>
+                <input type="number" id="new-weight-input" placeholder="לדוגמה: 88.2" step="0.1">
+                <div class="modal-buttons">
+                    <button class="btn btn-cancel" onclick="closeModal()">ביטול</button>
+                    <button class="btn btn-save" onclick="saveWeight()">שמור שקילה</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // --- נתוני המערכת הקבועים (Hardcoded) + נתוני הדגמה ---
+        const userHeightCm = 190;
+        const userAge = 25;
+        const startingWeight = 95.0;
+        const targetWeight = 80.0;
+        
+        // משתנה דינמי למשקל הנוכחי
+        let currentWeight = 88.5; 
+
+        // פונקציה המחשבת ומעדכנת את כל הנתונים במסך בזמן אמת
+        function updateDashboard() {
+            // חישובים
+            const heightMeters = userHeightCm / 100;
+            const bmi = currentWeight / (heightMeters * heightMeters);
+            const remaining = currentWeight - targetWeight;
+            const lost = startingWeight - currentWeight;
+            
+            const totalToLose = startingWeight - targetWeight;
+            let progressPercent = (lost / totalToLose) * 100;
+            if(progressPercent < 0) progressPercent = 0;
+            if(progressPercent > 100) progressPercent = 100;
+
+            // עדכון הטקסטים במסך
+            document.getElementById('remaining-weight').innerText = remaining.toFixed(1);
+            document.getElementById('bmi-val').innerText = bmi.toFixed(1);
+            document.getElementById('lost-val').innerText = lost.toFixed(1) + ' ק"ג';
+            document.getElementById('percent-val').innerText = Math.round(progressPercent) + '%';
+
+            // עדכון אנימציית טבעת ההתקדמות (SVG)
+            const circle = document.getElementById('progress-circle');
+            const circumference = 628; // 2 * pi * r (r=100)
+            const offset = circumference - (progressPercent / 100) * circumference;
+            
+            // שימוש ב-Timeout קטן כדי שהאנימציה תעבוד מיד עם טעינת הדף
+            setTimeout(() => {
+                circle.style.strokeDashoffset = offset;
+            }, 100);
+        }
+
+        // --- ניהול תפריט ניווט תחתון ---
+        function switchTab(tabId, element) {
+            // הסתרת כל המסכים והורדת סימון מהתפריט
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+            
+            // הצגת המסך הנבחר וסימון הכפתור בתפריט
+            document.getElementById('tab-' + tabId).classList.add('active');
+            element.classList.add('active');
+
+            // כפתור השקילה (FAB) יופיע רק במסך הראשי
+            const fab = document.getElementById('fab-btn');
+            if(tabId === 'dashboard') {
+                fab.style.display = 'flex';
+                // ריענון אנימציית הטבעת בחזרה למסך הראשי
+                updateDashboard();
+            } else {
+                fab.style.display = 'none';
+            }
+        }
+
+        // --- ניהול הפופ-אפ להזנת משקל ---
+        function openModal() {
+            document.getElementById('weight-modal').style.display = 'flex';
+            document.getElementById('new-weight-input').value = currentWeight;
+            document.getElementById('new-weight-input').focus();
+        }
+
+        function closeModal() {
+            document.getElementById('weight-modal').style.display = 'none';
+        }
+
+        function saveWeight() {
+            const inputVal = document.getElementById('new-weight-input').value;
+            const newWeight = parseFloat(inputVal);
+            
+            if(!isNaN(newWeight) && newWeight > 0) {
+                currentWeight = newWeight;
+                updateDashboard(); // עדכון מיידי של כל המסך והחישובים (כולל ה-BMI שמבוסס על הגובה הקבוע)
+                closeModal();
+            } else {
+                alert('אנא הזן משקל תקין');
+            }
+        }
+
+        // הפעלה ראשונית בעת טעינת הדף
+        window.onload = updateDashboard;
+    </script>
+</body>
+</html>
