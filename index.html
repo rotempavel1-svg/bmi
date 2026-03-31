@@ -12,6 +12,7 @@
         :root {
             --primary-color: #4CAF50;
             --secondary-color: #FF9800;
+            --cal-color: #3498db;
             --bg-color: #F4F7F6;
             --text-dark: #2E3135;
             --text-light: #8E9297;
@@ -44,20 +45,6 @@
 
         .screen-title { font-size: 20px; color: var(--text-dark); margin-bottom: 12px; font-weight: 700; }
 
-        /* טבעת התקדמות ופס קווי */
-        .progress-section { display: flex; flex-direction: column; justify-content: center; align-items: center; margin-bottom: 10px; position: relative; }
-        .progress-ring { width: 130px; height: 130px; transform: rotate(-90deg); }
-        .progress-ring circle { fill: none; stroke-width: 10; stroke-linecap: round; }
-        .progress-ring .bg-circle { stroke: #ffffff; }
-        .progress-ring .fg-circle { stroke: var(--primary-color); stroke-dasharray: 377; stroke-dashoffset: 377; transition: stroke-dashoffset 1.5s ease-out; }
-        
-        .progress-text { position: absolute; text-align: center; color: var(--text-dark); top: 35px; }
-        .progress-text h1 { font-size: 32px; font-weight: 700; line-height: 1; margin-bottom: -2px; }
-        .progress-text p { font-size: 11px; color: var(--text-light); font-weight: 600; margin-bottom: 0px; }
-        
-        .linear-progress-container { width: 80%; background: #ffffff; height: 8px; border-radius: 4px; overflow: hidden; margin-top: -5px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.1); }
-        .linear-progress-fill { height: 100%; background: var(--primary-color); width: 0%; transition: width 1s ease; }
-
         /* כרטיסיות נתונים מקוריות */
         .cards-grid { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 10px; }
         .stat-card { background: var(--card-bg); border-radius: 14px; padding: 10px 5px; flex: 1; text-align: center; box-shadow: 0 4px 8px rgba(0,0,0,0.03); }
@@ -68,20 +55,25 @@
         /* כרטיסיות כלליות */
         .card { background: white; border-radius: 16px; padding: 12px 14px; box-shadow: 0 4px 8px rgba(0,0,0,0.03); margin-bottom: 10px; }
         
+        /* אזור ספירת קלוריות - חדש! */
+        .calorie-counter-card { background: white; border-radius: 16px; padding: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 10px; text-align: center; border: 1px solid #e0f2f1; }
+        .cal-main-number { font-size: 32px; font-weight: 700; color: var(--cal-color); line-height: 1; margin: 5px 0; }
+        .cal-text-muted { font-size: 12px; color: var(--text-light); font-weight: 600; }
+        
+        .cal-progress-bg { width: 100%; height: 8px; background: #f0f0f0; border-radius: 4px; margin: 10px 0; overflow: hidden; position: relative; }
+        .cal-progress-fill { height: 100%; background: var(--cal-color); width: 0%; border-radius: 4px; transition: width 0.5s ease; }
+        
+        .cal-breakdown { display: flex; justify-content: space-between; margin-top: 10px; font-size: 12px; }
+        .cal-item { display: flex; flex-direction: column; align-items: center; }
+        .cal-item span { color: var(--text-light); }
+        .cal-item strong { color: var(--text-dark); font-size: 14px; }
+        .cal-item.eat strong { color: #4CAF50; }
+        .cal-item.burn strong { color: #FF9800; }
+
         /* לוח BMI קומפקטי */
         .bmi-labels { display: flex; justify-content: space-between; font-size: 9px; color: var(--text-light); font-weight: 600; margin-bottom: 3px; }
         .bmi-bar-container { display: flex; height: 8px; border-radius: 4px; position: relative; background: #eee; }
         .bmi-marker { position: absolute; top: -3px; width: 3px; height: 14px; background: #2E3135; border-radius: 2px; transition: right 0.8s; z-index: 2; }
-
-        /* קלוריות - שורה קומפקטית */
-        .cal-row { display: flex; gap: 10px; margin-bottom: 10px; }
-        .cal-card { flex: 1; background: white; border-radius: 14px; padding: 10px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 8px rgba(0,0,0,0.03); }
-        .cal-info { display: flex; flex-direction: column; }
-        .cal-info span { font-size: 10px; color: var(--text-light); font-weight: 600; }
-        .cal-info h4 { font-size: 16px; color: var(--text-dark); margin: 0; }
-        .cal-icon { padding: 6px; border-radius: 10px; display: flex; }
-        .cal-icon.in { color: #4CAF50; background: #E8F5E9; }
-        .cal-icon.out { color: #FF9800; background: #FFF3E0; }
 
         /* יומן שקילות וציר זמן */
         .history-header { font-size: 14px; font-weight: 700; color: var(--text-dark); margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
@@ -122,7 +114,6 @@
         .btn-cancel { background: #f1f2f6; color: var(--text-light); }
         .btn-save { background: var(--primary-color); color: white; }
 
-        .hidden { display: none !important; }
     </style>
 </head>
 <body>
@@ -133,37 +124,46 @@
             
             <div class="header-row">
                 <div class="user-info">
-                    <div class="profile-pic" onclick="switchTab('profile', document.getElementById('nav-profile'))">
+                    <div class="profile-pic" onclick="switchTab('profile')">
                         <img id="dash-photo" src="" style="display:none;">
                         <span id="dash-photo-icon" class="material-icons-round" style="color:#aaa;">person</span>
                     </div>
                     <h2>היי, <span id="user-name-display">אורח</span></h2>
                 </div>
-                <button class="edit-btn" onclick="switchTab('profile', document.getElementById('nav-profile'))">
+                <button class="edit-btn" onclick="switchTab('profile')">
                     <span class="material-icons-round">settings</span>
                 </button>
             </div>
 
-            <div class="progress-section">
-                <svg class="progress-ring">
-                    <circle class="bg-circle" cx="65" cy="65" r="55"></circle>
-                    <circle class="fg-circle" cx="65" cy="65" r="55" id="progress-circle" style="stroke-dasharray: 345; stroke-dashoffset: 345;"></circle>
-                </svg>
-                <div class="progress-text">
-                    <p>נותרו ליעד</p>
-                    <h1 id="remaining-weight">0</h1>
+            <div class="calorie-counter-card">
+                <p class="cal-text-muted">נותרו להיום (קק"ל)</p>
+                <h1 id="cal-remaining" class="cal-main-number">0</h1>
+                
+                <div class="cal-progress-bg">
+                    <div id="cal-progress-bar" class="cal-progress-fill"></div>
                 </div>
-                <div class="linear-progress-container">
-                    <div id="linear-progress" class="linear-progress-fill"></div>
+
+                <div class="cal-breakdown">
+                    <div class="cal-item">
+                        <span>יעד יומי</span>
+                        <strong id="cal-goal-display">0</strong>
+                    </div>
+                    <div class="cal-item eat">
+                        <span>אכלתי</span>
+                        <strong id="cal-in-display">0</strong>
+                    </div>
+                    <div class="cal-item burn">
+                        <span>שרפתי</span>
+                        <strong id="cal-out-display">0</strong>
+                    </div>
                 </div>
-                <p style="font-size: 10px; color: var(--text-light); margin-top: 3px;" id="progress-percent-text">0% הושלם</p>
             </div>
 
             <div class="cards-grid">
                 <div class="stat-card">
                     <span class="material-icons-round">monitor_weight</span>
                     <h3 id="current-weight-val">0</h3>
-                    <p>נוכחי</p>
+                    <p>ק"ג נוכחי</p>
                 </div>
                 <div class="stat-card">
                     <span class="material-icons-round">trending_down</span>
@@ -193,24 +193,6 @@
                 </div>
                 <p id="bmi-status-text" style="text-align: center; font-size: 11px; font-weight: 700; margin-top: 5px; margin-bottom: 0;"></p>
             </div>
-
-            <div class="cal-row">
-                <div class="cal-card">
-                    <div class="cal-info">
-                        <span>הכנסתי (אוכל)</span>
-                        <h4 id="dash-cal-in">0 קק"ל</h4>
-                    </div>
-                    <div class="cal-icon in"><span class="material-icons-round" style="font-size: 18px;">restaurant</span></div>
-                </div>
-                <div class="cal-card">
-                    <div class="cal-info">
-                        <span>הוצאתי (אימון)</span>
-                        <h4 id="dash-cal-out">0 קק"ל</h4>
-                    </div>
-                    <div class="cal-icon out"><span class="material-icons-round" style="font-size: 18px;">local_fire_department</span></div>
-                </div>
-            </div>
-
         </div>
 
         <div id="tab-calories" class="tab-content">
@@ -218,18 +200,18 @@
             <div class="card">
                 <div class="input-group">
                     <label>כמה קלוריות אכלת עכשיו?</label>
-                    <input type="number" id="input-cal-in" placeholder="למשל: 450">
+                    <input type="number" id="input-cal-in" placeholder="למשל: 450 (ארוחת בוקר)">
                 </div>
                 <button class="btn-main" onclick="addCalories('in')">הוסף למאזן אוכל</button>
             </div>
             <div class="card">
                 <div class="input-group">
                     <label>כמה קלוריות שרפת באימון?</label>
-                    <input type="number" id="input-cal-out" placeholder="למשל: 300">
+                    <input type="number" id="input-cal-out" placeholder="למשל: 300 (ריצה)">
                 </div>
                 <button class="btn-main" style="background: var(--secondary-color); box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);" onclick="addCalories('out')">הוסף למאזן שריפה</button>
             </div>
-            <p style="text-align: center; color: var(--text-light); font-size: 12px; margin-top: 10px;">* הנתונים מתאפסים אוטומטית בכל יום ומוצגים בגרף הניתוח.</p>
+            <p style="text-align: center; color: var(--text-light); font-size: 12px; margin-top: 10px;">* הנתונים מתאפסים אוטומטית בכל יום בחצות.</p>
         </div>
 
         <div id="tab-analytics" class="tab-content">
@@ -273,11 +255,8 @@
                     <input type="text" id="setup-name" placeholder="איך לקרוא לך?">
                 </div>
                 <div class="input-group">
-                    <label>מין:</label>
-                    <select id="setup-gender">
-                        <option value="male">זכר</option>
-                        <option value="female">נקבה</option>
-                    </select>
+                    <label>יעד קלוריות יומי (קק"ל):</label>
+                    <input type="number" id="setup-cal-goal" placeholder="למשל: 2000">
                 </div>
                 <div class="input-group">
                     <label>גובה (בס"מ):</label>
@@ -303,19 +282,19 @@
         </button>
 
         <div class="bottom-nav">
-            <div class="nav-item active" id="nav-dashboard" onclick="switchTab('dashboard', this)">
+            <div class="nav-item active" onclick="switchTab('dashboard', this)">
                 <span class="material-icons-round">dashboard</span><span>ראשי</span>
             </div>
-            <div class="nav-item hidden" id="nav-calories" onclick="switchTab('calories', this)">
-                <span class="material-icons-round">restaurant</span><span>קלוריות</span>
+            <div class="nav-item" onclick="switchTab('calories', this)">
+                <span class="material-icons-round">local_dining</span><span>קלוריות</span>
             </div>
-            <div class="nav-item" id="nav-analytics" onclick="switchTab('analytics', this)">
+            <div class="nav-item" onclick="switchTab('analytics', this)">
                 <span class="material-icons-round">analytics</span><span>ניתוח</span>
             </div>
-            <div class="nav-item" id="nav-journey" onclick="switchTab('journey', this)">
+            <div class="nav-item" onclick="switchTab('journey', this)">
                 <span class="material-icons-round">emoji_events</span><span>המסע</span>
             </div>
-            <div class="nav-item" id="nav-profile" onclick="switchTab('profile', this)">
+            <div class="nav-item" onclick="switchTab('profile', this)">
                 <span class="material-icons-round">person</span><span>פרופיל</span>
             </div>
         </div>
@@ -335,34 +314,31 @@
 
     <script>
         let appData = {
-            name: '', gender: 'male', height: null, startWeight: null, targetWeight: null, photo: '',
+            name: '', height: null, startWeight: null, targetWeight: null, photo: '',
+            calorieGoal: 2000, // ערך ברירת מחדל לקלוריות
             history: [], // { date: "DD/MM", weight: 88.5 }
             calories: {} // { "DD/MM": { in: 0, out: 0 } }
         };
         let chartInstance = null;
 
         function loadData() {
-            const savedData = localStorage.getItem('weightTrackerPremiumOriginal');
+            const savedData = localStorage.getItem('weightTrackerPremiumV3');
             if (savedData) {
                 appData = JSON.parse(savedData);
             }
             
             if (!appData.startWeight || !appData.targetWeight || !appData.height) {
-                switchTab('profile', document.getElementById('nav-profile'));
+                switchTab('profile', document.querySelectorAll('.nav-item')[4]);
                 document.getElementById('fab-btn').style.display = 'none';
             } else {
                 // אכלוס טופס הפרופיל
                 document.getElementById('setup-name').value = appData.name || '';
-                document.getElementById('setup-gender').value = appData.gender || 'male';
+                document.getElementById('setup-cal-goal').value = appData.calorieGoal || 2000;
                 document.getElementById('setup-height').value = appData.height || '';
                 document.getElementById('setup-start').value = appData.startWeight || '';
                 document.getElementById('setup-target').value = appData.targetWeight || '';
                 
                 if(appData.photo) setPhotoUI(appData.photo);
-
-                // ניהול תפריט: הסתר פרופיל, הצג קלוריות
-                document.getElementById('nav-profile').classList.add('hidden');
-                document.getElementById('nav-calories').classList.remove('hidden');
 
                 updateDashboard();
                 initChart();
@@ -372,18 +348,21 @@
 
         function saveProfile() {
             const name = document.getElementById('setup-name').value;
-            const gender = document.getElementById('setup-gender').value;
+            const calGoal = parseInt(document.getElementById('setup-cal-goal').value);
             const height = parseFloat(document.getElementById('setup-height').value);
             const start = parseFloat(document.getElementById('setup-start').value);
             const target = parseFloat(document.getElementById('setup-target').value);
             
-            if (isNaN(height) || isNaN(start) || isNaN(target) || start <= target) {
-                alert('יש להזין נתונים תקינים. המשקל ההתחלתי חייב להיות גבוה ממשקל היעד.');
+            if (isNaN(height) || isNaN(start) || isNaN(target) || isNaN(calGoal)) {
+                alert('יש להזין נתונים מספריים תקינים בכל השדות.');
                 return;
             }
 
-            appData.name = name; appData.gender = gender; appData.height = height;
-            appData.startWeight = start; appData.targetWeight = target;
+            appData.name = name; 
+            appData.calorieGoal = calGoal;
+            appData.height = height;
+            appData.startWeight = start; 
+            appData.targetWeight = target;
             
             const today = getTodayStr();
             if (appData.history.length === 0) {
@@ -392,13 +371,10 @@
             
             saveToStorage();
             
-            document.getElementById('nav-profile').classList.add('hidden');
-            document.getElementById('nav-calories').classList.remove('hidden');
-            
             updateDashboard();
             initChart();
             renderHistoryList();
-            switchTab('dashboard', document.getElementById('nav-dashboard'));
+            switchTab('dashboard', document.querySelectorAll('.nav-item')[0]);
         }
 
         function handlePhoto(input) {
@@ -436,6 +412,7 @@
             document.getElementById('input-cal-' + type).value = '';
             updateDashboard();
             updateChart();
+            alert('הקלוריות עודכנו במאזן היומי!');
         }
 
         function getTodayStr() {
@@ -443,7 +420,7 @@
             return today.getDate().toString().padStart(2, '0') + '/' + (today.getMonth() + 1).toString().padStart(2, '0');
         }
 
-        function saveToStorage() { localStorage.setItem('weightTrackerPremiumOriginal', JSON.stringify(appData)); }
+        function saveToStorage() { localStorage.setItem('weightTrackerPremiumV3', JSON.stringify(appData)); }
 
         function getCurrentWeight() {
             if (appData.history.length === 0) return appData.startWeight;
@@ -456,31 +433,52 @@
             // שם
             document.getElementById('user-name-display').innerText = appData.name || 'אורח';
 
-            const current = getCurrentWeight();
+            // קלוריות!
+            const todayStr = getTodayStr();
+            const calToday = appData.calories[todayStr] || {in:0, out:0};
+            const goal = appData.calorieGoal || 2000;
             
-            // חישובים למעגל ולפס התקדמות
-            let remaining = current - appData.targetWeight;
-            if (remaining < 0) remaining = 0;
+            // הנוסחה: יעד - מה שאכלתי + מה ששרפתי (כי שריפה נותנת לי עוד קלוריות לאכול)
+            let remainingCals = goal - calToday.in + calToday.out;
+            
+            document.getElementById('cal-goal-display').innerText = goal;
+            document.getElementById('cal-in-display').innerText = calToday.in;
+            document.getElementById('cal-out-display').innerText = calToday.out;
+            
+            const remainingEl = document.getElementById('cal-remaining');
+            remainingEl.innerText = remainingCals;
+            
+            // שינוי צבע אם עברנו את התקציב (חריגה)
+            if(remainingCals < 0) {
+                remainingEl.style.color = '#e74c3c'; // אדום
+            } else {
+                remainingEl.style.color = 'var(--cal-color)'; // צבע רגיל כחול
+            }
+
+            // עדכון פס התקדמות קלורי
+            let calPercent = (calToday.in / (goal + calToday.out)) * 100;
+            if(calPercent > 100) calPercent = 100;
+            if(isNaN(calPercent)) calPercent = 0;
+            
+            const calBar = document.getElementById('cal-progress-bar');
+            calBar.style.width = calPercent + '%';
+            if (calPercent >= 100) {
+                calBar.style.background = '#e74c3c'; // הופך אדום כשמגיעים לקצה
+            } else if (calPercent > 80) {
+                calBar.style.background = '#f1c40f'; // צהוב כאזהרה
+            } else {
+                calBar.style.background = 'var(--cal-color)';
+            }
+
+
+            // עדכון משקלים
+            const current = getCurrentWeight();
             const lost = appData.startWeight - current;
             const totalToLose = appData.startWeight - appData.targetWeight;
-            let progressPercent = (lost / totalToLose) * 100;
-            if(progressPercent < 0) progressPercent = 0;
-            if(progressPercent > 100) progressPercent = 100;
 
-            document.getElementById('remaining-weight').innerText = remaining.toFixed(1);
             document.getElementById('current-weight-val').innerText = current.toFixed(1);
             document.getElementById('lost-val').innerText = lost.toFixed(1);
             document.getElementById('target-val').innerText = appData.targetWeight;
-
-            // מעגל (היקף 345)
-            const circle = document.getElementById('progress-circle');
-            const circumference = 345; 
-            const offset = circumference - (progressPercent / 100) * circumference;
-            setTimeout(() => { circle.style.strokeDashoffset = offset; }, 100);
-
-            // פס קווי
-            document.getElementById('linear-progress').style.width = progressPercent + '%';
-            document.getElementById('progress-percent-text').innerText = Math.round(progressPercent) + '% הושלמו';
 
             // BMI
             const hM = appData.height / 100;
@@ -498,12 +496,6 @@
             const clampedBmi = Math.min(Math.max(bmi, 15), 40);
             const bmiPercent = ((clampedBmi - 15) / 25) * 100;
             document.getElementById('bmi-marker').style.right = `calc(${bmiPercent}% - 1.5px)`;
-
-            // קלוריות היום
-            const todayStr = getTodayStr();
-            const calToday = appData.calories[todayStr] || {in:0, out:0};
-            document.getElementById('dash-cal-in').innerText = calToday.in + ' קק"ל';
-            document.getElementById('dash-cal-out').innerText = calToday.out + ' קק"ל';
 
             buildRoadmap(lost, totalToLose);
         }
@@ -531,12 +523,10 @@
             if (chartInstance) chartInstance.destroy();
             const ctx = document.getElementById('weightChart').getContext('2d');
             
-            // לוקח את 10 הימים האחרונים
             const recentHistory = appData.history.slice(-10);
             const labels = recentHistory.map(entry => entry.date);
             const weightData = recentHistory.map(entry => entry.weight);
             
-            // חישוב מאזן קלורי נטו לאותם ימים (הכנסה פחות הוצאה)
             const calData = labels.map(date => {
                 const c = appData.calories[date];
                 return c ? (c.in - c.out) : 0;
@@ -563,7 +553,7 @@
                             label: 'מאזן קלוריות (נטו)',
                             data: calData,
                             type: 'bar',
-                            backgroundColor: 'rgba(255, 152, 0, 0.4)',
+                            backgroundColor: 'rgba(52, 152, 219, 0.4)',
                             borderRadius: 4,
                             yAxisID: 'y1'
                         }
@@ -590,7 +580,7 @@
         }
 
         function updateChart() {
-            initChart(); // קל יותר לצייר מחדש בגלל המערכים המשולבים
+            initChart();
         }
 
         function renderHistoryList() {
@@ -648,7 +638,15 @@
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             document.getElementById('tab-' + tabId).classList.add('active');
-            if(element) element.classList.add('active');
+            
+            if(element) {
+                element.classList.add('active');
+            } else {
+                // מציאת אלמנט הניווט המתאים במקרה שהקריאה נעשתה ללא העברת האלמנט
+                const tabs = ['dashboard', 'calories', 'analytics', 'journey', 'profile'];
+                const index = tabs.indexOf(tabId);
+                if (index !== -1) document.querySelectorAll('.nav-item')[index].classList.add('active');
+            }
             
             const fab = document.getElementById('fab-btn');
             if ((tabId === 'dashboard' || tabId === 'analytics' || tabId === 'journey') && appData.startWeight) {
