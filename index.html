@@ -42,23 +42,24 @@ body{background:var(--bg);display:flex;justify-content:center;height:100dvh;over
 .date-btn{background:rgba(255,255,255,.2);border:none;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff}
 .date-lbl{font-size:12px;font-weight:600;color:rgba(255,255,255,.95);letter-spacing:.4px}
 
-/* HALF RING */
-.ring-section{display:flex;align-items:center;justify-content:space-between;padding:0 6px;position:relative;z-index:1}
-.ring-side{text-align:center;min-width:66px}
-.rs-lbl{font-size:10px;color:rgba(255,255,255,.8);font-weight:500;text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px}
-.rs-val{font-size:26px;font-weight:800;color:#fff;line-height:1}
-.ring-wrap{position:relative;width:148px;height:78px}
-.ring-svg{overflow:visible}
-.hr-bg{fill:none;stroke:rgba(255,255,255,.22);stroke-width:10;stroke-linecap:round}
-.hr-fill{fill:none;stroke:#fff;stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset .8s cubic-bezier(.4,0,.2,1)}
-.hr-fill.warn{stroke:var(--warn)} .hr-fill.danger{stroke:var(--danger)}
-.ring-center{position:absolute;bottom:0;left:0;right:0;text-align:center}
-.rc-num{font-size:28px;font-weight:800;color:#fff;line-height:1}
-.rc-lbl{font-size:10px;color:rgba(255,255,255,.8);font-weight:500}
-.rc-goal{font-size:9px;color:rgba(255,255,255,.65);margin-top:1px}
+/* WEIGHT FOCUS (Redesigned Home) */
+.weight-focus{display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;z-index:1;color:#fff}
+.wf-lbl{font-size:11px;font-weight:500;color:rgba(255,255,255,.8);text-transform:uppercase;letter-spacing:1px;margin-bottom:2px}
+.wf-val{font-size:52px;font-weight:800;line-height:1;margin-bottom:12px;text-shadow:0 2px 10px rgba(0,0,0,.1)}
+.wf-val span{font-size:22px;font-weight:600;opacity:0.9}
+.wf-stats{display:flex;gap:30px;background:rgba(255,255,255,.15);padding:10px 24px;border-radius:24px;backdrop-filter:blur(5px)}
+.wf-stat-item{text-align:center}
+.wfs-lbl{font-size:10px;font-weight:500;color:rgba(255,255,255,.8);margin-bottom:3px}
+.wfs-val{font-size:16px;font-weight:700;color:#fff}
+
+/* SMART INSIGHT (Moved to Home) */
+.sbox{background:linear-gradient(135deg,rgba(45,198,83,.07),rgba(107,217,111,.1));border:1.5px solid rgba(45,198,83,.2);border-radius:var(--rmd);padding:13px;margin:15px 13px 10px}
+.sbox-t{display:flex;align-items:center;gap:5px;font-size:10px;font-weight:700;color:var(--green-1);text-transform:uppercase;letter-spacing:.5px;margin-bottom:7px}
+.sbox-txt{font-size:12px;color:var(--t2);line-height:1.6}
+.sbox-txt strong{color:var(--t1)}
 
 /* SECTION */
-.sec{padding:0 13px;margin-bottom:10px;margin-top:15px}
+.sec{padding:0 13px;margin-bottom:10px;margin-top:5px}
 .sec-ttl{font-size:10px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px}
 .goals-scroll{display:flex;gap:7px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
 .goals-scroll::-webkit-scrollbar{display:none}
@@ -90,23 +91,6 @@ body{background:var(--bg);display:flex;justify-content:center;height:100dvh;over
 .nav-item .material-icons-round{font-size:22px;margin-bottom:2px}
 .nav-item span{font-size:10px;font-weight:600}
 
-/* FAB */
-.fab{position:absolute;bottom:78px;left:14px;background:var(--green-1);color:#fff;border:none;border-radius:50px;padding:11px 18px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:5px;box-shadow:0 4px 14px rgba(45,198,83,.4);cursor:pointer;z-index:10;transition:all .2s}
-
-/* MODALS */
-.moverlay{display:none;position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.38);backdrop-filter:blur(3px);z-index:30;justify-content:flex-end;align-items:flex-end}
-.msheet{background:#fff;border-radius:var(--rlg) var(--rlg) 0 0;padding:22px 18px 34px;width:100%;animation:su .3s cubic-bezier(.16,1,.3,1)}
-@keyframes su{from{transform:translateY(100%)}to{transform:translateY(0)}}
-.mhandle{width:34px;height:4px;background:#E0DDD8;border-radius:2px;margin:0 auto 18px}
-.msheet h3{font-size:17px;font-weight:700;color:var(--t1);text-align:center;margin-bottom:3px}
-.msheet p{font-size:11px;color:var(--t2);text-align:center;margin-bottom:16px}
-.minputs{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:14px}
-.mbtns{display:flex;gap:7px}
-.mbtn-c{flex:1;padding:13px;border-radius:var(--r);border:1.5px solid var(--border);background:#fff;font-size:13px;font-weight:600;color:var(--t2);cursor:pointer;font-family:'Rubik',sans-serif}
-.mbtn-s{flex:2;padding:13px;border-radius:var(--r);border:none;background:var(--green-1);color:#fff;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 4px 10px rgba(45,198,83,.3);font-family:'Rubik',sans-serif}
-.winput{width:100%;padding:14px;border:1.5px solid var(--border);border-radius:var(--r);font-size:30px;font-weight:800;text-align:center;background:#FAFAF8;font-family:'Rubik',sans-serif;color:var(--t1);outline:none;margin-bottom:14px}
-.winput:focus{border-color:var(--green-1)}
-
 /* ANALYTICS */
 .ins-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin:0 13px 10px}
 .icrd{background:#fff;border-radius:var(--r);padding:11px 7px;text-align:center;box-shadow:0 2px 7px rgba(0,0,0,.05)}
@@ -114,10 +98,6 @@ body{background:var(--bg);display:flex;justify-content:center;height:100dvh;over
 .ival{font-size:17px;font-weight:800;color:var(--t1);line-height:1}
 .ilbl{font-size:9px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.3px;margin-top:2px}
 .icrd.g .ival{color:var(--green-1)} .icrd.r .ival{color:var(--danger)} .icrd.b .ival{color:var(--blue)} .icrd.w .ival{color:var(--warn)}
-.sbox{background:linear-gradient(135deg,rgba(45,198,83,.07),rgba(107,217,111,.1));border:1.5px solid rgba(45,198,83,.2);border-radius:var(--rmd);padding:13px;margin:0 13px 10px}
-.sbox-t{display:flex;align-items:center;gap:5px;font-size:10px;font-weight:700;color:var(--green-1);text-transform:uppercase;letter-spacing:.5px;margin-bottom:7px}
-.sbox-txt{font-size:12px;color:var(--t2);line-height:1.6}
-.sbox-txt strong{color:var(--t1)}
 .hist-item{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid rgba(0,0,0,.05)}
 .hist-item:last-child{border-bottom:none}
 .hdate{font-size:11px;color:var(--t2);width:70px;font-weight:500}
@@ -130,7 +110,7 @@ body{background:var(--bg);display:flex;justify-content:center;height:100dvh;over
 .pfill{height:100%;border-radius:3px;transition:width .6s ease}
 .ppct{font-size:11px;font-weight:700;color:var(--t1);width:32px;text-align:left}
 
-/* PROFILE */
+/* PROFILE & INPUTS */
 .psec{background:var(--surface);border-radius:var(--rmd);padding:15px;margin:0 13px 10px}
 .psec-t{font-size:11px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:11px}
 .ig{margin-bottom:11px}
@@ -138,7 +118,8 @@ body{background:var(--bg);display:flex;justify-content:center;height:100dvh;over
 .ig input,.ig select{width:100%;padding:11px 13px;border:1.5px solid var(--border);border-radius:var(--r);font-size:13px;background:#fff;font-family:'Rubik',sans-serif;color:var(--t1);outline:none;transition:border-color .2s}
 .ig input:focus,.ig select:focus{border-color:var(--green-1)}
 .ig input::placeholder{color:var(--t3)}
-.btn-main{width:100%;padding:14px;background:var(--green-1);color:#fff;border:none;border-radius:var(--r);font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(45,198,83,.3);font-family:'Rubik',sans-serif}
+.btn-main{width:100%;padding:14px;background:var(--green-1);color:#fff;border:none;border-radius:var(--r);font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(45,198,83,.3);font-family:'Rubik',sans-serif;transition:opacity .2s}
+.btn-main:active{opacity:0.8}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:7px}
 
 /* JOURNEY */
@@ -184,32 +165,32 @@ body{background:var(--bg);display:flex;justify-content:center;height:100dvh;over
       <span class="date-lbl" id="date-label">היום</span>
       <button class="date-btn"><span class="material-icons-round" style="font-size:15px">chevron_left</span></button>
     </div>
-    <div class="ring-section">
-      <div class="ring-side">
-        <div class="rs-lbl">אכלתי</div>
-        <div class="rs-val" id="cal-eaten-big">0</div>
-      </div>
-      <div class="ring-wrap">
-        <svg class="ring-svg" width="148" height="78" viewBox="0 0 148 78">
-          <path class="hr-bg" d="M14 74 A60 60 0 0 1 134 74" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="10" stroke-linecap="round"/>
-          <path id="hr-fill" class="hr-fill" d="M14 74 A60 60 0 0 1 134 74" fill="none" stroke="white" stroke-width="10" stroke-linecap="round" stroke-dasharray="188" stroke-dashoffset="188"/>
-        </svg>
-        <div class="ring-center">
-          <div class="rc-num" id="cal-rem-num">0</div>
-          <div class="rc-lbl">קק"ל נותרו</div>
+    
+    <div class="weight-focus">
+      <div class="wf-lbl">משקל נוכחי</div>
+      <div class="wf-val" id="dash-weight-big">0.0 <span>ק"ג</span></div>
+      <div class="wf-stats">
+        <div class="wf-stat-item">
+          <div class="wfs-lbl">ירדת עד כה</div>
+          <div class="wfs-val" id="dash-lost" style="color:var(--grad-s)">0.0</div>
         </div>
-      </div>
-      <div class="ring-side">
-        <div class="rs-lbl">יעד</div>
-        <div class="rs-val" id="cal-goal-big">0</div>
+        <div class="wf-stat-item">
+          <div class="wfs-lbl">יעד סופי</div>
+          <div class="wfs-val" id="dash-target">0.0</div>
+        </div>
       </div>
     </div>
   </div>
 
-  <div class="sec"><div class="sec-ttl">יעדים יומיים</div><div class="goals-scroll" id="goals-scroll"></div></div>
+  <div class="sbox">
+    <div class="sbox-t"><span class="material-icons-round" style="font-size:14px">auto_awesome</span> תובנה חכמה</div>
+    <div class="sbox-txt" id="smart-txt">מנתח נתונים...</div>
+  </div>
+
+  <div class="sec"><div class="sec-ttl">סיכום יומי</div><div class="goals-scroll" id="goals-scroll"></div></div>
 
   <div class="card bmi-card" style="margin-bottom:10px">
-    <div class="bmi-top"><span class="bmi-ttl">BMI</span><span class="bmi-badge" id="bmi-bdg">—</span></div>
+    <div class="bmi-top"><span class="bmi-ttl">BMI מדד מסת גוף</span><span class="bmi-badge" id="bmi-bdg">—</span></div>
     <div class="bmi-lbls"><span>תת-משקל</span><span>תקין</span><span>עודף</span><span>השמנה</span></div>
     <div class="bmi-track">
       <div style="width:14%;background:#74B9FF"></div><div style="width:26%;background:#2DC653"></div>
@@ -222,10 +203,21 @@ body{background:var(--bg);display:flex;justify-content:center;height:100dvh;over
 <div id="tab-calories" class="tab">
   <div class="screen-ttl">תיעוד יומי</div>
   
+  <div class="card" style="border: 2px solid var(--green-1);">
+    <div class="card-t" style="color:var(--green-1)">⚖️ שקילה יומית</div>
+    <div class="ig">
+      <input type="number" id="wt-log-input" step="0.1" inputmode="decimal" placeholder="הכנס את המשקל שלך היום" style="font-size:20px; text-align:center; font-weight:700;">
+    </div>
+    <button class="btn-main" onclick="addWeightFromLog()">עדכן משקל יומי</button>
+  </div>
+
   <div class="card">
-    <div class="card-t">🍽️ קלוריות (סך הכל יומי)</div>
-    <div class="ig"><label>סה"כ קלוריות שנאכלו היום</label><input type="number" id="daily-cal-inp" placeholder="2000"></div>
-    <button class="btn-main" style="background:var(--blue);box-shadow:0 4px 12px rgba(59,158,255,.3)" onclick="saveCalories()">עדכן קלוריות יומית</button>
+    <div class="card-t">🍽️ מאזן קלורי</div>
+    <div class="g2">
+      <div class="ig"><label>נכנסו (אוכל)</label><input type="number" id="daily-cal-in" placeholder="2000"></div>
+      <div class="ig"><label>יצאו (שריפה/פעילות)</label><input type="number" id="daily-cal-out" placeholder="2500"></div>
+    </div>
+    <button class="btn-main" style="background:var(--blue);box-shadow:0 4px 12px rgba(59,158,255,.3)" onclick="saveCaloriesInOut()">עדכן מאזן קלורי</button>
   </div>
 
   <div class="card">
@@ -250,19 +242,10 @@ body{background:var(--bg);display:flex;justify-content:center;height:100dvh;over
   <div class="card">
     <div class="card-t">😴 שינה</div>
     <div class="ig"><label>שעות שינה אמש</label><input type="number" id="sleep-inp" step="0.5" placeholder="7.5"></div>
-    <button class="btn-main" style="background:var(--carbs);box-shadow:0 4px 12px rgba(162,155,254,.3);color:#fff" onclick="saveSleep()">עדכן שינה</button>
+    <button class="btn-main" style="background:#A29BFE;box-shadow:0 4px 12px rgba(162,155,254,.3);color:#fff" onclick="saveSleep()">עדכן שינה</button>
   </div>
   
-  <div class="card">
-    <div class="card-t">💪 אימון</div>
-    <div class="g2">
-      <div class="ig"><label>קלוריות שרופות</label><input type="number" id="inp-cal-out" placeholder="350"></div>
-      <div class="ig"><label>דקות אימון</label><input type="number" id="inp-active" placeholder="45"></div>
-    </div>
-    <button class="btn-main" style="background:var(--warn);box-shadow:0 4px 12px rgba(255,169,64,.3)" onclick="saveWorkout()">🔥 שמור אימון</button>
-  </div>
-  
-  <p style="text-align:center;color:var(--t3);font-size:10px;padding:0 13px 14px">* כל הנתונים מתאפסים בחצות יומית</p>
+  <p style="text-align:center;color:var(--t3);font-size:10px;padding:0 13px 14px">* כל הנתונים מתאפסים בחצות</p>
 </div>
 
 <div id="tab-analytics" class="tab">
@@ -278,10 +261,9 @@ body{background:var(--bg);display:flex;justify-content:center;height:100dvh;over
     <div class="icrd w"><div class="iem">👟</div><div class="ival" id="astep-val">—</div><div class="ilbl">צעדים ממוצע</div></div>
     <div class="icrd"><div class="iem">😴</div><div class="ival" id="asleep-val">—</div><div class="ilbl">שינה ממוצע</div></div>
   </div>
-  <div class="sbox"><div class="sbox-t"><span class="material-icons-round" style="font-size:12px">auto_awesome</span>תובנה חכמה</div><div class="sbox-txt" id="smart-txt">הוסף שקילות ותיעוד יומי לקבלת תובנות מותאמות.</div></div>
   <div class="card"><div class="card-t">התקדמות לקראת יעד</div><div id="goal-prog"></div></div>
   <div class="card"><div class="card-t">עמידה ביעדים (7 ימים)</div><div id="weekly-bars"></div></div>
-  <div class="card"><div class="card-t">גרף משקל + קלוריות</div><canvas id="weightChart"></canvas></div>
+  <div class="card"><div class="card-t">גרף משקל + קלוריות שנצרכו</div><canvas id="weightChart"></canvas></div>
   <div class="card"><div class="card-t">יומן שקילות מלא</div><div id="hist-container" style="max-height: 250px; overflow-y: auto; padding-right: 5px;"></div></div>
 </div>
 
@@ -316,13 +298,12 @@ body{background:var(--bg);display:flex;justify-content:center;height:100dvh;over
 
   <div class="psec">
     <div class="psec-t">יעדי תזונה יומית</div>
-    <div class="ig"><label>קלוריות יומיות (קק"ל)</label><input type="number" id="s-cal" placeholder="2000"></div>
+    <div class="ig"><label>יעד קלוריות יומי (נכנסות)</label><input type="number" id="s-cal" placeholder="2000"></div>
   </div>
 
   <div class="psec">
     <div class="psec-t">יעדי פעילות ואורח חיים</div>
     <div class="g2"><div class="ig"><label>צעדים יומיים</label><input type="number" id="s-steps" placeholder="10000"></div><div class="ig"><label>מים (ליטרים)</label><input type="number" id="s-water" step="0.1" placeholder="2.5"></div></div>
-    <div class="g2"><div class="ig"><label>דקות פעילות/יום</label><input type="number" id="s-amin" placeholder="30"></div><div class="ig"><label>אימונים/שבוע</label><input type="number" id="s-wouts" placeholder="4"></div></div>
     <div class="ig"><label>שינה יעד (שעות)</label><input type="number" id="s-sleep" step="0.5" placeholder="7.5"></div>
   </div>
 
@@ -330,44 +311,33 @@ body{background:var(--bg);display:flex;justify-content:center;height:100dvh;over
   <p style="text-align:center;color:var(--t3);font-size:10px;padding:0 13px 20px">* הנתונים נשמרים מקומית על המכשיר בלבד</p>
 </div>
 
-<button class="fab" id="fab-btn" onclick="openModal('weight')"><span class="material-icons-round">add</span>שקילה</button>
-
 <div class="bnav">
-  <div class="nav-item active" id="nav-dashboard" onclick="switchTab('dashboard',this)"><span class="material-icons-round">home</span><span>יומן</span></div>
+  <div class="nav-item active" id="nav-dashboard" onclick="switchTab('dashboard',this)"><span class="material-icons-round">home</span><span>בית</span></div>
   <div class="nav-item" id="nav-calories" onclick="switchTab('calories',this)"><span class="material-icons-round">edit_note</span><span>תיעוד</span></div>
   <div class="nav-item" id="nav-analytics" onclick="switchTab('analytics',this)"><span class="material-icons-round">bar_chart</span><span>ניתוח</span></div>
   <div class="nav-item" id="nav-journey" onclick="switchTab('journey',this)"><span class="material-icons-round">emoji_events</span><span>מסע</span></div>
   <div class="nav-item" id="nav-profile" onclick="switchTab('profile',this)"><span class="material-icons-round">tune</span><span>יעדים</span></div>
 </div>
 
-<div class="moverlay" id="wmodal">
-  <div class="msheet">
-    <div class="mhandle"></div>
-    <h3>⚖️ שקילה יומית</h3><p>בוקר, לפני אכילה, בתנאים אחידים</p>
-    <input type="number" class="winput" id="wt-input" step="0.1" inputmode="decimal" placeholder="0.0">
-    <div class="mbtns"><button class="mbtn-c" onclick="closeModal('wmodal')">ביטול</button><button class="mbtn-s" onclick="addWeight()">✓ שמור</button></div>
-  </div>
-</div>
-
 </div>
 <script>
 // ─────────────────────────────────────────
 let D={name:'',height:null,age:null,gender:'',startWeight:null,targetWeight:null,photo:'',activity:'moderate',
-  calorieGoal:2000, stepsGoal:10000,waterGoal:2.5,activeMinGoal:30,workoutsPerWeek:4,sleepGoal:7.5,
+  calorieGoal:2000, stepsGoal:10000,waterGoal:2.5,sleepGoal:7.5,
   targetPace:0.5, history:[],daily:{}};
 let chart=null;
 const $ = id => document.getElementById(id);
 const setText=(id,v)=>{const e=$(id);if(e)e.textContent=v};
 
-function sv(){localStorage.setItem('wtp2026_v2',JSON.stringify(D))}
-function ld(){const s=localStorage.getItem('wtp2026_v2');if(s)D={...D,...JSON.parse(s)};
-  if(!D.startWeight||!D.targetWeight||!D.height){switchTab('profile',$('nav-profile'));$('fab-btn').style.display='none';}
+function sv(){localStorage.setItem('wtp2026_v3',JSON.stringify(D))}
+function ld(){const s=localStorage.getItem('wtp2026_v3');if(s)D={...D,...JSON.parse(s)};
+  if(!D.startWeight||!D.targetWeight||!D.height){switchTab('profile',$('nav-profile'));}
   else{fillForm();if(D.photo)setPhoto(D.photo);upAll();}
 }
 
 function today(){const d=new Date();return d.getDate().toString().padStart(2,'0')+'/'+(d.getMonth()+1).toString().padStart(2,'0')+'/'+d.getFullYear();}
 function todayFull(){const d=new Date(),dy=['ראשון','שני','שלישי','רביעי','חמישי','שישי','שבת'],mn=['ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];return `${dy[d.getDay()]} ${d.getDate()} ${mn[d.getMonth()]}`;}
-function getDay(){const t=today();if(!D.daily[t])D.daily[t]={cals:0,water:0,steps:0,sleep:0,activeMin:0,workout:0};return D.daily[t];}
+function getDay(dateStr=today()){if(!D.daily[dateStr])D.daily[dateStr]={calsIn:0,calsOut:0,water:0,steps:0,sleep:0};return D.daily[dateStr];}
 function getCur(){return D.history.length?D.history[D.history.length-1].weight:D.startWeight;}
 
 // ─── PROFILE ───
@@ -376,8 +346,8 @@ function saveProfile(){
   D.name=$(  's-name')?.value||''; D.gender=$('s-gender')?.value||''; 
   D.height=np('s-height'); D.age=np('s-age'); D.startWeight=np('s-start'); D.targetWeight=np('s-target');
   D.calorieGoal=np('s-cal')||2000;
-  D.stepsGoal=np('s-steps')||10000; D.waterGoal=np('s-water')||2.5; D.activeMinGoal=np('s-amin')||30;
-  D.workoutsPerWeek=np('s-wouts')||4; D.sleepGoal=np('s-sleep')||7.5;
+  D.stepsGoal=np('s-steps')||10000; D.waterGoal=np('s-water')||2.5;
+  D.sleepGoal=np('s-sleep')||7.5;
   D.targetPace=parseFloat($('s-pace')?.value)||0.5;
   
   if(!D.calorieGoal||!D.height||!D.startWeight||!D.targetWeight){alert('יש למלא לפחות קלוריות, גובה ומשקלים');return;}
@@ -390,53 +360,54 @@ function fillForm(){
   set('s-name',D.name);set('s-height',D.height);set('s-age',D.age);set('s-gender',D.gender);
   set('s-start',D.startWeight);set('s-target',D.targetWeight);set('s-pace',D.targetPace);
   set('s-cal',D.calorieGoal);
-  set('s-steps',D.stepsGoal);set('s-water',D.waterGoal);set('s-amin',D.activeMinGoal);
-  set('s-wouts',D.workoutsPerWeek);set('s-sleep',D.sleepGoal);
+  set('s-steps',D.stepsGoal);set('s-water',D.waterGoal);set('s-sleep',D.sleepGoal);
 }
 
 function handlePhoto(inp){if(inp.files&&inp.files[0]){const r=new FileReader();r.onload=e=>{D.photo=e.target.result;setPhoto(e.target.result);sv()};r.readAsDataURL(inp.files[0]);}}
 function setPhoto(src){['pp-img','dash-photo'].forEach(id=>{const e=$(id);e.src=src;e.style.display='block'});$('pp-icon').style.display='none';$('dash-photo-icon').style.display='none';}
 
-// ─── DASHBOARD ───
+// ─── DASHBOARD & SMART INSIGHTS ───
 function updateDash(){
   if(!D.startWeight)return;
   setText('user-name-display', (D.name||'חבר')+' 👋');
   setText('date-label',todayFull());
   
-  const d=getDay(), goal=D.calorieGoal, eaten=d.cals, rem=goal-eaten;
+  const d=getDay();
+  const cur = getCur();
+  const lost = D.startWeight - cur;
   
-  setText('cal-eaten-big',eaten); 
-  setText('cal-goal-big',goal); 
-  setText('cal-rem-num',rem);
+  // Update big weight display
+  $('dash-weight-big').innerHTML = `${cur.toFixed(1)} <span>ק"ג</span>`;
+  setText('dash-lost', lost > 0 ? lost.toFixed(1) : '0.0');
+  setText('dash-target', D.targetWeight.toFixed(1));
   
-  $('cal-rem-num').style.color=rem<0?'var(--danger)':'#fff';
-  const pct=Math.min(1,eaten/(goal||1));
-  const ring=$('hr-fill'); ring.style.strokeDashoffset=188-pct*188;
-  ring.className='hr-fill'+(pct>=1?' danger':pct>.8?' warn':'');
-
-  renderGoalsRings(d);
-  
-  const hM=D.height/100, bmi=getCur()/(hM*hM);
+  // BMI
+  const hM=D.height/100, bmi=cur/(hM*hM);
   let bt,bc;
   if(bmi<18.5){bt='תת-משקל';bc='var(--blue)'}else if(bmi<25){bt='תקין';bc='var(--green-1)'}else if(bmi<30){bt='עודף';bc='var(--warn)'}else{bt='השמנה';bc='var(--danger)'}
   const bdg=$('bmi-bdg'); bdg.textContent=`${bmi.toFixed(1)} · ${bt}`; bdg.style.color=bc; bdg.style.background=bc+'22';
   const cl=Math.min(Math.max(bmi,15),40); $('bmi-mkr').style.right=`calc(${((cl-15)/25*100).toFixed(1)}% - 6.5px)`;
   
-  buildRoadmap(D.startWeight-getCur(),D.startWeight-D.targetWeight);
+  renderGoalsSummary(d);
+  buildRoadmap(lost, D.startWeight-D.targetWeight);
+  generateSmartInsight(); // Over 20+ logic checks
 }
 
-function renderGoalsRings(d){
+function renderGoalsSummary(d){
   const c=$('goals-scroll'); if(!c)return;
   const r=18, circ=(2*Math.PI*r).toFixed(1);
   const goals=[
-    {lbl:'מים (L)',  ico:'💧', cur:d.water||0,      max:D.waterGoal||2.5,   col:'#74B9FF'},
+    {lbl:'קלוריות In', ico:'🍽️', cur:d.calsIn||0, max:D.calorieGoal||2000, col:'#3B9EFF'},
+    {lbl:'קלוריות Out',ico:'🔥', cur:d.calsOut||0, max:2500, col:'#FF4757'},
+    {lbl:'מים (L)',  ico:'💧', cur:d.water||0,      max:D.waterGoal||2.5,    col:'#74B9FF'},
     {lbl:'צעדים',  ico:'👟', cur:d.steps||0,      max:D.stepsGoal||10000,  col:'#6C5CE7'},
-    {lbl:'שינה',   ico:'😴', cur:d.sleep||0,      max:D.sleepGoal||7.5,    col:'#A29BFE'},
-    {lbl:'פעיל',   ico:'⚡', cur:d.activeMin||0,  max:D.activeMinGoal||30, col:'#FDCB6E'},
-    {lbl:'שריפה',  ico:'🔥', cur:d.workout||0,    max:300,                  col:'#E17055'},
+    {lbl:'שינה',   ico:'😴', cur:d.sleep||0,      max:D.sleepGoal||7.5,    col:'#A29BFE'}
   ];
   c.innerHTML=goals.map(g=>{
-    const p=Math.min(1,g.max>0?g.cur/g.max:0), off=(parseFloat(circ)-p*parseFloat(circ)).toFixed(1);
+    let maxToUse = g.max;
+    // Specific logic for Cals Out which doesn't have a strict "max"
+    if(g.lbl === 'קלוריות Out') maxToUse = Math.max(2000, g.cur * 1.2); 
+    const p=Math.min(1,maxToUse>0?g.cur/maxToUse:0), off=(parseFloat(circ)-p*parseFloat(circ)).toFixed(1);
     const disp=g.lbl==='צעדים'&&g.cur>=1000?(g.cur/1000).toFixed(1)+'k':g.cur;
     return `<div class="gmini">
       <div class="gmini-ring">
@@ -451,13 +422,126 @@ function renderGoalsRings(d){
   }).join('');
 }
 
+// ─── SMART INSIGHTS ENGINE (25+ Scenarios) ───
+function generateSmartInsight() {
+  const e = $('smart-txt'); if(!e) return;
+  const hist = D.history;
+  const n = hist.length;
+  if(n < 2) { e.innerHTML = 'הכנס נתוני שקילה ויומן בימים הקרובים כדי להתחיל לקבל <strong>תובנות חכמות מותאמות אישית</strong>.'; return; }
+
+  const cur = getCur();
+  const lost = D.startWeight - cur;
+  const totalTarget = D.startWeight - D.targetWeight;
+  const pct = totalTarget > 0 ? (lost / totalTarget) * 100 : 0;
+  
+  const todayDate = today();
+  const dToday = getDay(todayDate);
+  
+  // Calculate streaks & averages
+  let wStreak = 1;
+  for(let i=n-1; i>0; i--) {
+    const diff = (parseDateStr(hist[i].date) - parseDateStr(hist[i-1].date)) / 864e5;
+    if(diff === 1) wStreak++; else break;
+  }
+  
+  const l7days = Object.values(D.daily).slice(-7);
+  const avgWater = l7days.length ? l7days.reduce((s, d) => s + (d.water || 0), 0) / l7days.length : 0;
+  const avgSteps = l7days.length ? l7days.reduce((s, d) => s + (d.steps || 0), 0) / l7days.length : 0;
+  const avgSleep = l7days.length ? l7days.reduce((s, d) => s + (d.sleep || 0), 0) / l7days.length : 0;
+  
+  let wDrop7d = 0, wDrop3d = 0, isPlateau = false;
+  if (n >= 2) {
+      const curDateObj = parseDateStr(hist[n-1].date);
+      // 7 days drop
+      for(let i=n-2; i>=0; i--) {
+          if((curDateObj - parseDateStr(hist[i].date))/864e5 >= 7) { wDrop7d = hist[i].weight - cur; break; }
+      }
+      // 3 days drop
+      if (n >= 4) {
+          const w1 = hist[n-1].weight, w2 = hist[n-2].weight, w3 = hist[n-3].weight;
+          if (w1 === w2 && w2 === w3) isPlateau = true;
+          wDrop3d = hist[n-4].weight - cur;
+      }
+  }
+
+  // Generate Insight Array with Priorities
+  let insights = [];
+  
+  // 1. Deficit check today
+  if (dToday.calsIn > 0 && dToday.calsOut > 0) {
+      const diff = dToday.calsOut - dToday.calsIn;
+      if (diff > 500) insights.push({ t:`אתה בגרעון קלורי מצוין היום של <strong>${diff} קלוריות</strong>. זו הדרך לירידה בטוחה!`, p: 8 });
+      else if (diff < 0) insights.push({ t:`נראה שהיום צרכת <strong>${Math.abs(diff)} קלוריות יותר</strong> ממה ששרפת. שים לב לזה מחר.`, p: 8 });
+  }
+  
+  // 2. Weight drop milestones
+  if (lost >= 5 && lost < 5.2) insights.push({ t:`מדהים! ירדת כבר <strong>5 קילו</strong> מההתחלה. ציון דרך משמעותי! 🥳`, p: 10 });
+  if (lost >= 10 && lost < 10.3) insights.push({ t:`<strong>10 קילוגרם ירדו!</strong> אתה פשוט משנה את החיים שלך! 🔥`, p: 10 });
+  
+  // 3. Percentage milestones
+  if (pct >= 50 && pct < 52) insights.push({ t:`חצי דרך מאחוריך! הגעת ל-<strong>50% מהיעד</strong> שלך. תמשיך ככה!`, p: 9 });
+  if (pct >= 90) insights.push({ t:`אתה בישורת האחרונה! <strong>${pct.toFixed(0)}% מהדרך הושלמה</strong>. לא להישבר עכשיו! 🏁`, p: 9 });
+
+  // 4. Short term weight trends
+  if (isPlateau) insights.push({ t:`המשקל שלך עומד במקום ב-3 הימים האחרונים. <strong>זה טבעי לחלוטין!</strong> אל תוותר, הגוף מתארגן מחדש.`, p: 7 });
+  if (wDrop7d >= 1) insights.push({ t:`שבוע פנטסטי! ירדת <strong>${wDrop7d.toFixed(1)} ק"ג</strong> ב-7 הימים האחרונים.`, p: 8 });
+  if (wDrop7d < 0) insights.push({ t:`המשקל עלה במעט השבוע. כדאי להקפיד יותר על המאזן הקלורי היומי כדי לחזור למסלול.`, p: 6 });
+  if (wDrop3d > 0.5) insights.push({ t:`ירידה יפה בימים האחרונים! הגוף מגיב מצוין לשגרה שלך.`, p: 5 });
+
+  // 5. Streaks
+  if (wStreak >= 7 && wStreak % 7 === 0) insights.push({ t:`<strong>${wStreak} ימים ברצף</strong> של שקילה! משמעת הברזל הזו תביא אותך ליעד בוודאות.`, p: 6 });
+
+  // 6. Water, Steps, Sleep Averages
+  if (avgWater > 0 && avgWater < (D.waterGoal * 0.6)) insights.push({ t:`ממוצע המים שלך נמוך: <strong>רק ${avgWater.toFixed(1)} ליטר</strong>. הגברת השתייה תאיץ את חילוף החומרים! 💧`, p: 7 });
+  else if (avgWater >= D.waterGoal) insights.push({ t:`אלופי המים! אתה עומד ביעד השתייה השבועי. זה תורם לתחושת שובע ועור בריא.`, p: 5 });
+  
+  if (avgSteps > 0 && avgSteps < (D.stepsGoal * 0.5)) insights.push({ t:`אתה פחות פעיל לאחרונה (${Math.round(avgSteps)} צעדים בממוצע). נסה להוסיף הליכה קצרה בערב. 🚶‍♂️`, p: 6 });
+  else if (avgSteps >= D.stepsGoal) insights.push({ t:`מעולה! אתה עושה מעל <strong>${Math.round(avgSteps)} צעדים</strong> בממוצע. שורף קלוריות גם בלי לשים לב.`, p: 5 });
+
+  if (avgSleep > 0 && avgSleep < 6) insights.push({ t:`אתה ישן בממוצע רק <strong>${avgSleep.toFixed(1)} שעות</strong>. חוסר שינה מעלה סטרס ומעכב ירידה במשקל! 😴`, p: 8 });
+
+  // 7. General Motivation
+  if (lost > 0) insights.push({ t:`כל קילוגרם שאתה מוריד מוריד לחץ מהמפרקים ומשפר את בריאות הלב. תמשיך ככה! 💪`, p: 2 });
+  insights.push({ t:`זכור, ירידה במשקל היא לא קו ישר אלא זיג-זג. העיקר שהמגמה הכללית היא כלפי מטה! 📉`, p: 1 });
+  
+  // 8. Missing Data
+  if (dToday.calsIn === 0 && new Date().getHours() > 14) insights.push({ t:`עוד לא הזנת מה אכלת היום. <strong>מעקב הוא המפתח להצלחה!</strong> גש ללשונית "תיעוד".`, p: 7 });
+
+  // Pick highest priority
+  insights.sort((a,b) => b.p - a.p);
+  
+  // Select top insight, add slight randomness if priorities are tied to keep it fresh
+  let finalT = insights[0]?.t || 'המשך לתעד נתונים יומיומיים כדי לאפשר למערכת לנתח את ההתקדמות שלך.';
+  e.innerHTML = finalT;
+}
+
 // ─── LOG TAB ───
-function saveCalories(){
-  const v=parseInt($('daily-cal-inp')?.value);
-  if(!isNaN(v)&&v>=0){
-    getDay().cals=v;
+function addWeightFromLog() {
+  const val = parseFloat($('wt-log-input')?.value); 
+  if(isNaN(val) || val <= 0){alert('אנא הזן משקל תקין');return;}
+  const t = today(), last = D.history[D.history.length-1];
+  if(last && last.date === t) last.weight = val; 
+  else D.history.push({date:t, weight:val});
+  sv(); 
+  $('wt-log-input').value = '';
+  upAll();
+  alert('המשקל נשמר בהצלחה! 👍');
+}
+
+function saveCaloriesInOut() {
+  const vIn = parseInt($('daily-cal-in')?.value);
+  const vOut = parseInt($('daily-cal-out')?.value);
+  const d = getDay();
+  
+  let updated = false;
+  if(!isNaN(vIn) && vIn >= 0) { d.calsIn = vIn; updated = true; }
+  if(!isNaN(vOut) && vOut >= 0) { d.calsOut = vOut; updated = true; }
+  
+  if(updated) {
     sv(); updateDash();
-    $('daily-cal-inp').value='';
+    $('daily-cal-in').value = '';
+    $('daily-cal-out').value = '';
+    alert('מאזן קלורי עודכן! 🍽️');
   }
 }
 
@@ -482,21 +566,8 @@ function renderWater(d){
   `;
 }
 
-function saveSteps(){const v=parseInt($('steps-inp')?.value);if(!isNaN(v)&&v>=0){getDay().steps=v;sv();updateDash();$('steps-inp').value='';}}
-function saveSleep(){const v=parseFloat($('sleep-inp')?.value);if(!isNaN(v)&&v>0){getDay().sleep=v;sv();updateDash();$('sleep-inp').value='';}}
-function saveWorkout(){
-  const c=parseFloat($('inp-cal-out')?.value)||0, m=parseFloat($('inp-active')?.value)||0;
-  const d=getDay(); d.workout=(d.workout||0)+c; d.activeMin=(d.activeMin||0)+m; sv(); upAll();
-  $('inp-cal-out').value=''; $('inp-active').value='';
-}
-
-// ─── WEIGHT ───
-function addWeight(){
-  const val=parseFloat($('wt-input')?.value); if(isNaN(val)||val<=0){alert('הזן משקל תקין');return;}
-  const t=today(), last=D.history[D.history.length-1];
-  if(last&&last.date===t) last.weight=val; else D.history.push({date:t,weight:val});
-  sv(); closeModal('wmodal'); upAll();
-}
+function saveSteps(){const v=parseInt($('steps-inp')?.value);if(!isNaN(v)&&v>=0){getDay().steps=v;sv();updateDash();$('steps-inp').value=''; alert('צעדים עודכנו!');}}
+function saveSleep(){const v=parseFloat($('sleep-inp')?.value);if(!isNaN(v)&&v>0){getDay().sleep=v;sv();updateDash();$('sleep-inp').value=''; alert('שינה עודכנה!');}}
 
 function parseDateStr(str) {
   const parts = str.split('/');
@@ -509,7 +580,6 @@ function renderAnalytics(){
   const hist=D.history, n=hist.length, cur=getCur(), lost=D.startWeight-cur, toGo=cur-D.targetWeight, total=D.startWeight-D.targetWeight;
   let pace=0;
   
-  // Weekly Best Drop (7 days window over entire history)
   let bestWk = 0;
   for(let i=0; i<n; i++) {
     const d1 = parseDateStr(hist[i].date);
@@ -528,8 +598,8 @@ function renderAnalytics(){
   for(let i=n-1;i>0;i--){const df=(parseDateStr(hist[i].date)-parseDateStr(hist[i-1].date))/864e5;if(df===1)streak++;else break;}
   
   let eta='—'; if(toGo<=0)eta='✓'; else if(pace<-.05){const w=toGo/Math.abs(pace);eta=w<100?Math.round(w).toString():'∞';}
-  const cals=Object.values(D.daily).filter(d=>d.cals>0);
-  const comp=cals.length?Math.round(cals.filter(d=>d.cals<=D.calorieGoal).length/cals.length*100):null;
+  const cals = Object.values(D.daily).filter(d => (d.calsIn || 0) > 0);
+  const comp = cals.length ? Math.round(cals.filter(d => (d.calsIn||0) <= D.calorieGoal).length / cals.length * 100) : null;
   const l7=hist.slice(-7), wavg=l7.length?(l7.reduce((s,e)=>s+e.weight,0)/l7.length).toFixed(1):'—';
   
   const waterE=Object.values(D.daily).filter(d=>d.water>0);
@@ -550,25 +620,8 @@ function renderAnalytics(){
   const etaC=$('eta-card'); if(etaC) etaC.className='icrd '+(eta==='✓'?'g':pace>=0?'r':'b');
   const compC=$('comp-card'); if(compC) compC.className='icrd '+(comp===null?'':(comp>=80?'g':comp>=50?'w':'r'));
 
-  buildSmartInsight(pace,streak,comp,toGo,lost,total,n,asl,as,awat);
   buildGoalProg(lost,total);
   buildWeeklyBars();
-}
-
-function buildSmartInsight(pace,streak,comp,toGo,lost,total,n,asl,as,awat){
-  const e=$('smart-txt'); if(!e)return;
-  if(n<2){e.innerHTML='תוסיף שקילות יומיות לקבל תובנות מותאמות 📊';return;}
-  const pct=total>0?(lost/total*100):0; let msgs=[];
-  if(pace<-.3) msgs.push(`הקצב שלך <strong>${Math.abs(pace).toFixed(2)} ק"ג לשבוע</strong> — בדיוק על הדרך הנכונה! 🎯`);
-  else if(pace>0.1) msgs.push(`המשקל עלה מעט — שים לב למאזן הקלורי היומי.`);
-  else if(pace<0) msgs.push(`קצב ירידה איטי (${Math.abs(pace).toFixed(2)} ק"ג/שבוע) — אפשר לשלב יותר פעילות גופנית.`);
-  if(streak>=7) msgs.push(`<strong>${streak} ימי רצף</strong> — עקביות יוצאת דופן! זה הסוד הגדול 💪`);
-  if(comp!==null&&comp>=80) msgs.push(`<strong>${comp}%</strong> עמידה בקלוריות — שמירה מצוינת!`);
-  if(parseFloat(asl)<6&&asl!=='—') msgs.push(`שינה ממוצעת של ${asl} שעות בלבד — שינה לא מספקת מעכבת ירידה.`);
-  if(awat!=='—'&&parseFloat(awat)<(D.waterGoal||2.5)*0.7) msgs.push(`שתיית מים נמוכה — ${awat} ליטר ממוצע. לחות טובה מגבירה חילוף חומרים!`);
-  if(pct>=75) msgs.push(`<strong>${pct.toFixed(0)}%</strong> מהיעד הושג — ישורת אחרונה! 🏁`);
-  else if(pct>=50) msgs.push(`כבר השגת <strong>מחצית מהיעד שלך!</strong> ✅`);
-  e.innerHTML=msgs.length?msgs[0]:'המשך לתעד שקילות ויעדים יומיים לתובנות מדויקות.';
 }
 
 function buildGoalProg(lost,total){
@@ -588,7 +641,7 @@ function buildWeeklyBars(){
   const entries=Object.entries(D.daily).slice(-7);
   if(!entries.length){c.innerHTML='<p style="font-size:11px;color:var(--t3);text-align:center;padding:8px 0">אין מספיק נתונים</p>';return;}
   const metrics=[
-    {l:'קלוריות', f:d=>d.cals>0&&d.cals<=D.calorieGoal},
+    {l:'קלוריות In', f:d=>(d.calsIn||0)>0 && (d.calsIn||0)<=D.calorieGoal},
     {l:'מים',     f:d=>(d.water||0)>=(D.waterGoal||2.5)},
     {l:'צעדים',   f:d=>(d.steps||0)>=(D.stepsGoal||10000)},
     {l:'שינה',    f:d=>(d.sleep||0)>=(D.sleepGoal||7.5)}
@@ -605,12 +658,12 @@ function initChart(){
   if(chart)chart.destroy();
   const ctx=$('weightChart')?.getContext('2d'); if(!ctx)return;
   const r=D.history.slice(-14), lb=r.map(e=>e.date.substring(0,5)), wd=r.map(e=>e.weight);
-  const cd=r.map(e=>{const d=D.daily[e.date];return d?d.cals:null});
+  const cd=r.map(e=>{const d=D.daily[e.date];return d?d.calsIn:null});
   const tl=r.map(()=>D.targetWeight);
   chart=new Chart(ctx,{type:'line',data:{labels:lb,datasets:[
     {label:'משקל',data:wd,borderColor:'#2DC653',backgroundColor:'rgba(45,198,83,.07)',borderWidth:2.5,pointBackgroundColor:'#2DC653',pointRadius:4,fill:true,tension:.35,yAxisID:'y'},
     {label:'יעד',data:tl,borderColor:'rgba(255,169,64,.5)',borderWidth:1.5,borderDash:[5,4],pointRadius:0,fill:false,tension:0,yAxisID:'y'},
-    {label:'קלוריות שנצרכו',data:cd,type:'bar',backgroundColor:cd.map(v=>v!=null?(v>D.calorieGoal?'rgba(255,71,87,.4)':'rgba(74,158,255,.3)'):'transparent'),borderRadius:4,yAxisID:'y1'}
+    {label:'קלוריות (In)',data:cd,type:'bar',backgroundColor:cd.map(v=>v!=null?(v>D.calorieGoal?'rgba(255,71,87,.4)':'rgba(74,158,255,.3)'):'transparent'),borderRadius:4,yAxisID:'y1'}
   ]},options:{responsive:true,interaction:{mode:'index',intersect:false},
     scales:{
       x:{ticks:{color:'#A8B0AD',font:{size:9,family:'Rubik'}},grid:{color:'rgba(0,0,0,.03)'}},
@@ -664,19 +717,18 @@ function switchTab(id,el){
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   $('tab-'+id).classList.add('active');
   if(el) el.classList.add('active'); else{const n=$('nav-'+id);if(n&&n.style.display!=='none')n.classList.add('active');}
-  const fab=$('fab-btn');
-  const showFab=['dashboard','analytics','journey'].includes(id)&&D.startWeight;
-  fab.style.display=showFab?'flex':'none';
+  
   if(id==='dashboard') updateDash();
   if(id==='analytics'){renderAnalytics();renderHistory();initChart();}
-  if(id==='calories'){renderWater(getDay());}
+  if(id==='calories'){
+      renderWater(getDay());
+      // Fill current day cals inputs if exist
+      const d = getDay();
+      if(d.calsIn) $('daily-cal-in').value = d.calsIn;
+      if(d.calsOut) $('daily-cal-out').value = d.calsOut;
+  }
 }
 
-// ─── MODALS ───
-function openModal(type){
-  if(type==='weight'){$('wmodal').style.display='flex'; const i=$('wt-input');i.value=getCur();setTimeout(()=>i.focus(),100);}
-}
-function closeModal(id){$(id).style.display='none';}
 function upAll(){updateDash();renderAnalytics();renderHistory();initChart();}
 window.onload=ld;
 </script>
