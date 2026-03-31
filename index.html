@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Health Tracker Pro</title>
+    <title>מעקב משקל פרימיום</title>
     <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -11,7 +11,7 @@
     <style>
         :root {
             --primary-color: #4CAF50;
-            --secondary-color: #ff9800;
+            --secondary-color: #FF9800;
             --bg-color: #F4F7F6;
             --text-dark: #2E3135;
             --text-light: #8E9297;
@@ -29,344 +29,646 @@
         }
 
         .tab-content {
-            display: none; flex: 1; padding: 12px 15px; overflow-y: auto; padding-bottom: 80px;
+            display: none; flex: 1; padding: 12px 18px; overflow-y: auto; padding-bottom: 75px;
         }
-        .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .tab-content.active { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .screen-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .screen-title { font-size: 20px; color: var(--text-dark); font-weight: 700; }
+        /* כותרות ופרופיל למעלה */
+        .header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .user-info { display: flex; align-items: center; gap: 10px; }
+        .profile-pic { width: 42px; height: 42px; border-radius: 50%; background: #ddd; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 2px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.05); cursor: pointer; }
+        .profile-pic img { width: 100%; height: 100%; object-fit: cover; }
+        .user-info h2 { font-size: 18px; color: var(--text-dark); font-weight: 700; margin: 0; }
+        .edit-btn { background: none; border: none; color: var(--text-light); cursor: pointer; display: flex; align-items: center; padding: 5px; }
 
-        /* כפתור עריכה קטן */
-        .edit-profile-btn { background: none; border: none; color: var(--text-light); cursor: pointer; padding: 5px; }
+        .screen-title { font-size: 20px; color: var(--text-dark); margin-bottom: 12px; font-weight: 700; }
 
-        /* פרופיל ותמונה */
-        .profile-pic-container { width: 80px; height: 80px; border-radius: 50%; background: #ddd; margin: 0 auto 15px; overflow: hidden; border: 3px solid white; position: relative; display: flex; align-items: center; justify-content: center; }
-        .profile-pic-container img { width: 100%; height: 100%; object-fit: cover; }
-        .profile-pic-container .material-icons-round { font-size: 40px; color: white; }
-
-        /* התקדמות */
-        .progress-bar-container { width: 100%; height: 12px; background: #e0e0e0; border-radius: 10px; margin: 10px 0; overflow: hidden; }
-        .progress-bar-fill { height: 100%; background: var(--primary-color); width: 0%; transition: width 1s ease; }
-
-        /* קלוריות */
-        .cal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
-        .cal-box { padding: 15px; border-radius: 15px; text-align: center; color: white; }
-        .cal-in { background: #66bb6a; }
-        .cal-out { background: #ffa726; }
-        .cal-total { background: var(--text-dark); grid-column: span 2; margin-top: 5px; }
-
-        /* כרטיסיות */
-        .card { background: white; border-radius: 16px; padding: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.03); margin-bottom: 12px; }
+        /* טבעת התקדמות ופס קווי */
+        .progress-section { display: flex; flex-direction: column; justify-content: center; align-items: center; margin-bottom: 10px; position: relative; }
+        .progress-ring { width: 130px; height: 130px; transform: rotate(-90deg); }
+        .progress-ring circle { fill: none; stroke-width: 10; stroke-linecap: round; }
+        .progress-ring .bg-circle { stroke: #ffffff; }
+        .progress-ring .fg-circle { stroke: var(--primary-color); stroke-dasharray: 377; stroke-dashoffset: 377; transition: stroke-dashoffset 1.5s ease-out; }
         
+        .progress-text { position: absolute; text-align: center; color: var(--text-dark); top: 35px; }
+        .progress-text h1 { font-size: 32px; font-weight: 700; line-height: 1; margin-bottom: -2px; }
+        .progress-text p { font-size: 11px; color: var(--text-light); font-weight: 600; margin-bottom: 0px; }
+        
+        .linear-progress-container { width: 80%; background: #ffffff; height: 8px; border-radius: 4px; overflow: hidden; margin-top: -5px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.1); }
+        .linear-progress-fill { height: 100%; background: var(--primary-color); width: 0%; transition: width 1s ease; }
+
+        /* כרטיסיות נתונים מקוריות */
+        .cards-grid { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 10px; }
+        .stat-card { background: var(--card-bg); border-radius: 14px; padding: 10px 5px; flex: 1; text-align: center; box-shadow: 0 4px 8px rgba(0,0,0,0.03); }
+        .stat-card .material-icons-round { color: var(--primary-color); font-size: 20px; margin-bottom: 2px; }
+        .stat-card h3 { font-size: 16px; color: var(--text-dark); margin-bottom: 0px; }
+        .stat-card p { font-size: 11px; color: var(--text-light); font-weight: 600; }
+
+        /* כרטיסיות כלליות */
+        .card { background: white; border-radius: 16px; padding: 12px 14px; box-shadow: 0 4px 8px rgba(0,0,0,0.03); margin-bottom: 10px; }
+        
+        /* לוח BMI קומפקטי */
+        .bmi-labels { display: flex; justify-content: space-between; font-size: 9px; color: var(--text-light); font-weight: 600; margin-bottom: 3px; }
+        .bmi-bar-container { display: flex; height: 8px; border-radius: 4px; position: relative; background: #eee; }
+        .bmi-marker { position: absolute; top: -3px; width: 3px; height: 14px; background: #2E3135; border-radius: 2px; transition: right 0.8s; z-index: 2; }
+
+        /* קלוריות - שורה קומפקטית */
+        .cal-row { display: flex; gap: 10px; margin-bottom: 10px; }
+        .cal-card { flex: 1; background: white; border-radius: 14px; padding: 10px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 8px rgba(0,0,0,0.03); }
+        .cal-info { display: flex; flex-direction: column; }
+        .cal-info span { font-size: 10px; color: var(--text-light); font-weight: 600; }
+        .cal-info h4 { font-size: 16px; color: var(--text-dark); margin: 0; }
+        .cal-icon { padding: 6px; border-radius: 10px; display: flex; }
+        .cal-icon.in { color: #4CAF50; background: #E8F5E9; }
+        .cal-icon.out { color: #FF9800; background: #FFF3E0; }
+
+        /* יומן שקילות וציר זמן */
+        .history-header { font-size: 14px; font-weight: 700; color: var(--text-dark); margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+        .history-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #f0f0f0; }
+        .history-item:last-child { border-bottom: none; }
+        .history-date { font-size: 12px; color: var(--text-light); width: 50px; }
+        .history-weight { font-size: 14px; font-weight: 700; color: var(--text-dark); flex: 1; text-align: center; }
+        .history-diff { font-size: 12px; font-weight: 600; width: 60px; text-align: left; }
+        .diff-down { color: #4CAF50; } .diff-up { color: #F44336; } .diff-none { color: var(--text-light); }
+
+        .timeline { position: relative; padding-right: 15px; border-right: 2px solid #e0e0e0; margin-right: 5px; }
+        .milestone { position: relative; margin-bottom: 15px; }
+        .milestone::before { content: ''; position: absolute; right: -21px; top: 0; width: 10px; height: 10px; border-radius: 50%; background: white; border: 2px solid #e0e0e0; z-index: 1; }
+        .milestone.achieved::before { border-color: var(--primary-color); background: var(--primary-color); }
+        .milestone h4 { font-size: 13px; color: var(--text-dark); margin-bottom: 2px; }
+        .milestone p { font-size: 11px; color: var(--text-light); }
+        .milestone.achieved h4 { color: var(--primary-color); }
+
         /* טפסים */
-        .input-group { margin-bottom: 10px; text-align: right; }
-        .input-group label { display: block; margin-bottom: 3px; font-weight: 600; font-size: 13px; color: var(--text-dark); }
-        .input-group input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 10px; font-size: 15px; }
-        
-        .btn-main { width: 100%; padding: 12px; background: var(--primary-color); color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; }
+        .input-group { margin-bottom: 12px; text-align: right; }
+        .input-group label { display: block; margin-bottom: 4px; font-weight: 600; font-size: 13px; color: var(--text-dark); }
+        .input-group input, .input-group select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 10px; font-size: 15px; background: #fafafa; font-family: 'Assistant', sans-serif; }
+        .btn-main { width: 100%; padding: 12px; background: var(--primary-color); color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3); }
 
-        /* ניווט */
+        /* תפריט ופופ-אפים */
+        .fab { position: absolute; bottom: 80px; left: 15px; background-color: var(--primary-color); color: white; border: none; border-radius: 30px; padding: 10px 18px; font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4); cursor: pointer; z-index: 10; }
         .bottom-nav { position: absolute; bottom: 0; width: 100%; height: 65px; background: white; display: flex; justify-content: space-around; align-items: center; box-shadow: 0 -5px 20px rgba(0,0,0,0.05); border-top-left-radius: 20px; border-top-right-radius: 20px; z-index: 20; }
-        .nav-item { display: flex; flex-direction: column; align-items: center; color: #bdc3c7; cursor: pointer; flex: 1; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: #bdc3c7; cursor: pointer; transition: color 0.3s; flex: 1; }
         .nav-item.active { color: var(--primary-color); }
-        .nav-item .material-icons-round { font-size: 24px; }
-        .nav-item span { font-size: 11px; font-weight: 600; }
-
-        /* BMI Bar */
-        .bmi-bar { height: 8px; border-radius: 4px; background: linear-gradient(to left, #e74c3c, #f1c40f, #2ecc71, #3498db); margin: 10px 0; position: relative; }
-        .bmi-pointer { position: absolute; top: -4px; width: 4px; height: 16px; background: black; border-radius: 2px; transition: right 0.5s; }
-
-        .fab { position: absolute; bottom: 85px; left: 20px; background: var(--primary-color); color: white; border: none; border-radius: 30px; padding: 10px 20px; font-weight: 700; display: flex; align-items: center; gap: 5px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); z-index: 10; }
+        .nav-item .material-icons-round { font-size: 22px; margin-bottom: 2px; }
+        .nav-item span { font-size: 10px; font-weight: 600; }
         
-        #profile-nav-item { display: flex; } /* ברירת מחדל מוצג */
+        .modal-overlay { display: none; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 30; justify-content: center; align-items: center; }
+        .modal-content { background: white; padding: 20px; border-radius: 20px; width: 80%; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .modal-content input { width: 100%; padding: 10px; margin: 15px 0; border: 1px solid #ddd; border-radius: 12px; font-size: 18px; text-align: center; }
+        .modal-buttons { display: flex; gap: 10px; }
+        .btn { flex: 1; padding: 10px; border-radius: 10px; border: none; font-weight: 700; font-size: 14px; cursor: pointer; }
+        .btn-cancel { background: #f1f2f6; color: var(--text-light); }
+        .btn-save { background: var(--primary-color); color: white; }
+
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
-<div class="app-container">
-    
-    <div id="tab-dashboard" class="tab-content active">
-        <div class="screen-header">
-            <h2 id="greeting" class="screen-title">שלום! 👋</h2>
-            <button class="edit-profile-btn" onclick="switchTab('profile')">
-                <span class="material-icons-round">settings</span>
-            </button>
-        </div>
-
-        <div class="card" style="text-align: center;">
-            <div class="profile-pic-container" id="dash-photo">
-                <span class="material-icons-round">person</span>
-            </div>
-            <p style="font-size: 14px; color: var(--text-light);">התקדמות ליעד</p>
-            <div class="progress-bar-container">
-                <div id="main-progress-fill" class="progress-bar-fill"></div>
-            </div>
-            <p id="progress-text" style="font-weight: 700; color: var(--primary-color);">0%</p>
-        </div>
-
-        <div class="cal-grid">
-            <div class="cal-box cal-in">
-                <small>אכלתי היום</small>
-                <h2 id="dash-cal-in">0</h2>
-            </div>
-            <div class="cal-box cal-out">
-                <small>שרפתי היום</small>
-                <h2 id="dash-cal-out">0</h2>
-            </div>
-        </div>
-
-        <div class="card">
-            <p style="font-size: 13px; font-weight: 700;">מצב BMI</p>
-            <div class="bmi-bar"><div id="bmi-pointer" class="bmi-pointer" style="right: 50%;"></div></div>
-            <p id="bmi-desc" style="font-size: 12px; text-align: center; color: var(--text-light);"></p>
-        </div>
-    </div>
-
-    <div id="tab-calories" class="tab-content">
-        <h2 class="screen-title">יומן קלוריות</h2>
-        <div class="card">
-            <div class="input-group">
-                <label>הוסף קלוריות (אוכל):</label>
-                <input type="number" id="input-cal-in" placeholder="כמה אכלת?">
-            </div>
-            <button class="btn-main" onclick="addCalories('in')">הוסף מזון</button>
-        </div>
-        <div class="card">
-            <div class="input-group">
-                <label>שרפת קלוריות (אימון):</label>
-                <input type="number" id="input-cal-out" placeholder="כמה שרפת?">
-            </div>
-            <button class="btn-main" style="background: var(--secondary-color);" onclick="addCalories('out')">הוסף פעילות</button>
-        </div>
-    </div>
-
-    <div id="tab-analytics" class="tab-content">
-        <h2 class="screen-title">ניתוח מתקדם</h2>
-        <div class="card">
-            <canvas id="advancedChart"></canvas>
-        </div>
-        <div class="card" id="daily-summary" style="font-size: 14px;">
-            </div>
-    </div>
-
-    <div id="tab-profile" class="tab-content">
-        <h2 class="screen-title">הגדרות פרופיל</h2>
-        <div class="card">
-            <div class="profile-pic-container" onclick="document.getElementById('photo-upload').click()">
-                <img id="profile-img-preview" src="" style="display:none;">
-                <span id="photo-placeholder" class="material-icons-round">add_a_photo</span>
-            </div>
-            <input type="file" id="photo-upload" hidden accept="image/*" onchange="handlePhoto(this)">
+    <div class="app-container">
+        
+        <div id="tab-dashboard" class="tab-content active">
             
-            <div class="input-group">
-                <label>שם מלא:</label>
-                <input type="text" id="p-name">
+            <div class="header-row">
+                <div class="user-info">
+                    <div class="profile-pic" onclick="switchTab('profile', document.getElementById('nav-profile'))">
+                        <img id="dash-photo" src="" style="display:none;">
+                        <span id="dash-photo-icon" class="material-icons-round" style="color:#aaa;">person</span>
+                    </div>
+                    <h2>היי, <span id="user-name-display">אורח</span></h2>
+                </div>
+                <button class="edit-btn" onclick="switchTab('profile', document.getElementById('nav-profile'))">
+                    <span class="material-icons-round">settings</span>
+                </button>
             </div>
-            <div class="input-group">
-                <label>גובה (ס"מ):</label>
-                <input type="number" id="p-height">
+
+            <div class="progress-section">
+                <svg class="progress-ring">
+                    <circle class="bg-circle" cx="65" cy="65" r="55"></circle>
+                    <circle class="fg-circle" cx="65" cy="65" r="55" id="progress-circle" style="stroke-dasharray: 345; stroke-dashoffset: 345;"></circle>
+                </svg>
+                <div class="progress-text">
+                    <p>נותרו ליעד</p>
+                    <h1 id="remaining-weight">0</h1>
+                </div>
+                <div class="linear-progress-container">
+                    <div id="linear-progress" class="linear-progress-fill"></div>
+                </div>
+                <p style="font-size: 10px; color: var(--text-light); margin-top: 3px;" id="progress-percent-text">0% הושלם</p>
             </div>
-            <div class="input-group">
-                <label>משקל התחלתי:</label>
-                <input type="number" id="p-start">
+
+            <div class="cards-grid">
+                <div class="stat-card">
+                    <span class="material-icons-round">monitor_weight</span>
+                    <h3 id="current-weight-val">0</h3>
+                    <p>נוכחי</p>
+                </div>
+                <div class="stat-card">
+                    <span class="material-icons-round">trending_down</span>
+                    <h3 id="lost-val">0</h3>
+                    <p>סך ירידה</p>
+                </div>
+                <div class="stat-card">
+                    <span class="material-icons-round">flag</span>
+                    <h3 id="target-val">0</h3>
+                    <p>משקל יעד</p>
+                </div>
             </div>
-            <div class="input-group">
-                <label>משקל יעד:</label>
-                <input type="number" id="p-target">
+
+            <div class="card" style="padding: 10px 14px;">
+                <div class="bmi-labels">
+                    <span>תת-משקל</span>
+                    <span>תקין</span>
+                    <span>עודף</span>
+                    <span>השמנה</span>
+                </div>
+                <div class="bmi-bar-container">
+                    <div style="width: 14%; background-color: #3498db; border-radius: 0 4px 4px 0;"></div>
+                    <div style="width: 26%; background-color: #2ecc71;"></div>
+                    <div style="width: 20%; background-color: #f1c40f;"></div>
+                    <div style="width: 40%; background-color: #e74c3c; border-radius: 4px 0 0 4px;"></div>
+                    <div id="bmi-marker" class="bmi-marker" style="right: 0%;"></div>
+                </div>
+                <p id="bmi-status-text" style="text-align: center; font-size: 11px; font-weight: 700; margin-top: 5px; margin-bottom: 0;"></p>
             </div>
-            <button class="btn-main" onclick="saveProfile()">שמור הכל</button>
+
+            <div class="cal-row">
+                <div class="cal-card">
+                    <div class="cal-info">
+                        <span>הכנסתי (אוכל)</span>
+                        <h4 id="dash-cal-in">0 קק"ל</h4>
+                    </div>
+                    <div class="cal-icon in"><span class="material-icons-round" style="font-size: 18px;">restaurant</span></div>
+                </div>
+                <div class="cal-card">
+                    <div class="cal-info">
+                        <span>הוצאתי (אימון)</span>
+                        <h4 id="dash-cal-out">0 קק"ל</h4>
+                    </div>
+                    <div class="cal-icon out"><span class="material-icons-round" style="font-size: 18px;">local_fire_department</span></div>
+                </div>
+            </div>
+
         </div>
+
+        <div id="tab-calories" class="tab-content">
+            <h2 class="screen-title">יומן קלוריות יומי</h2>
+            <div class="card">
+                <div class="input-group">
+                    <label>כמה קלוריות אכלת עכשיו?</label>
+                    <input type="number" id="input-cal-in" placeholder="למשל: 450">
+                </div>
+                <button class="btn-main" onclick="addCalories('in')">הוסף למאזן אוכל</button>
+            </div>
+            <div class="card">
+                <div class="input-group">
+                    <label>כמה קלוריות שרפת באימון?</label>
+                    <input type="number" id="input-cal-out" placeholder="למשל: 300">
+                </div>
+                <button class="btn-main" style="background: var(--secondary-color); box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);" onclick="addCalories('out')">הוסף למאזן שריפה</button>
+            </div>
+            <p style="text-align: center; color: var(--text-light); font-size: 12px; margin-top: 10px;">* הנתונים מתאפסים אוטומטית בכל יום ומוצגים בגרף הניתוח.</p>
+        </div>
+
+        <div id="tab-analytics" class="tab-content">
+            <h2 class="screen-title">ניתוח מתקדם</h2>
+            
+            <div class="card">
+                <p style="font-size: 12px; text-align: center; margin-bottom: 5px; color: var(--text-light); font-weight: 600;">משקל מול מאזן קלורי יומי</p>
+                <canvas id="weightChart"></canvas>
+            </div>
+            
+            <div class="card">
+                <div class="history-header">
+                    <span>יומן שקילות</span>
+                    <span class="material-icons-round" style="font-size: 16px; color: var(--text-light);">calendar_month</span>
+                </div>
+                <div class="history-list" id="history-container"></div>
+            </div>
+        </div>
+
+        <div id="tab-journey" class="tab-content">
+            <h2 class="screen-title">אבני הדרך שלי</h2>
+            <div class="card">
+                <div class="timeline" id="milestones-container"></div>
+            </div>
+        </div>
+
+        <div id="tab-profile" class="tab-content">
+            <h2 class="screen-title">הגדרות אישיות</h2>
+            <div class="card">
+                <div style="text-align: center; margin-bottom: 15px;">
+                    <div class="profile-pic" style="width: 70px; height: 70px; margin: 0 auto; cursor: pointer;" onclick="document.getElementById('photo-upload').click()">
+                        <img id="profile-img-preview" src="" style="display:none;">
+                        <span id="profile-photo-icon" class="material-icons-round" style="font-size: 30px; color: #aaa;">add_a_photo</span>
+                    </div>
+                    <p style="font-size: 11px; color: var(--text-light); margin-top: 5px;">לחץ כדי להעלות תמונה</p>
+                    <input type="file" id="photo-upload" hidden accept="image/*" onchange="handlePhoto(this)">
+                </div>
+
+                <div class="input-group">
+                    <label>שם:</label>
+                    <input type="text" id="setup-name" placeholder="איך לקרוא לך?">
+                </div>
+                <div class="input-group">
+                    <label>מין:</label>
+                    <select id="setup-gender">
+                        <option value="male">זכר</option>
+                        <option value="female">נקבה</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>גובה (בס"מ):</label>
+                    <input type="number" id="setup-height" placeholder="למשל: 175">
+                </div>
+                <div class="input-group">
+                    <label>משקל התחלתי (ק"ג):</label>
+                    <input type="number" id="setup-start" step="0.1" placeholder="למשל: 90">
+                </div>
+                <div class="input-group">
+                    <label>משקל יעד (ק"ג):</label>
+                    <input type="number" id="setup-target" step="0.1" placeholder="למשל: 75">
+                </div>
+                <button class="btn-main" onclick="saveProfile()">שמור נתונים</button>
+            </div>
+            <p style="text-align: center; color: var(--text-light); font-size: 11px; margin-top: 5px;">
+                * הנתונים נשמרים מקומית על המכשיר שלך בלבד.
+            </p>
+        </div>
+
+        <button class="fab" id="fab-btn" onclick="openModal()">
+            <span class="material-icons-round">add</span> שקילה
+        </button>
+
+        <div class="bottom-nav">
+            <div class="nav-item active" id="nav-dashboard" onclick="switchTab('dashboard', this)">
+                <span class="material-icons-round">dashboard</span><span>ראשי</span>
+            </div>
+            <div class="nav-item hidden" id="nav-calories" onclick="switchTab('calories', this)">
+                <span class="material-icons-round">restaurant</span><span>קלוריות</span>
+            </div>
+            <div class="nav-item" id="nav-analytics" onclick="switchTab('analytics', this)">
+                <span class="material-icons-round">analytics</span><span>ניתוח</span>
+            </div>
+            <div class="nav-item" id="nav-journey" onclick="switchTab('journey', this)">
+                <span class="material-icons-round">emoji_events</span><span>המסע</span>
+            </div>
+            <div class="nav-item" id="nav-profile" onclick="switchTab('profile', this)">
+                <span class="material-icons-round">person</span><span>פרופיל</span>
+            </div>
+        </div>
+
+        <div class="modal-overlay" id="weight-modal">
+            <div class="modal-content">
+                <h3>שקילה יומית</h3>
+                <input type="number" id="new-weight-input" step="0.1" inputmode="decimal">
+                <div class="modal-buttons">
+                    <button class="btn btn-cancel" onclick="closeModal()">ביטול</button>
+                    <button class="btn btn-save" onclick="addWeightEntry()">שמור</button>
+                </div>
+            </div>
+        </div>
+
     </div>
 
-    <button class="fab" id="fab-weight" onclick="openWeightModal()">
-        <span class="material-icons-round">scale</span> שקילה
-    </button>
+    <script>
+        let appData = {
+            name: '', gender: 'male', height: null, startWeight: null, targetWeight: null, photo: '',
+            history: [], // { date: "DD/MM", weight: 88.5 }
+            calories: {} // { "DD/MM": { in: 0, out: 0 } }
+        };
+        let chartInstance = null;
 
-    <div class="bottom-nav">
-        <div class="nav-item active" onclick="switchTab('dashboard', this)">
-            <span class="material-icons-round">home</span><span>ראשי</span>
-        </div>
-        <div class="nav-item" onclick="switchTab('calories', this)">
-            <span class="material-icons-round">restaurant</span><span>קלוריות</span>
-        </div>
-        <div class="nav-item" onclick="switchTab('analytics', this)">
-            <span class="material-icons-round">insights</span><span>ניתוח</span>
-        </div>
-        <div id="profile-nav-item" class="nav-item" onclick="switchTab('profile', this)">
-            <span class="material-icons-round">account_circle</span><span>פרופיל</span>
-        </div>
-    </div>
-</div>
-
-<script>
-    let appData = {
-        name: '', height: 0, startWeight: 0, targetWeight: 0, photo: '',
-        history: [], // {date, weight}
-        calories: {} // {date: {in, out}}
-    };
-
-    function loadData() {
-        const saved = localStorage.getItem('healthTrackerDataV2');
-        if (saved) {
-            appData = JSON.parse(saved);
-            if (appData.startWeight > 0) {
-                document.getElementById('profile-nav-item').style.display = 'none';
+        function loadData() {
+            const savedData = localStorage.getItem('weightTrackerPremiumOriginal');
+            if (savedData) {
+                appData = JSON.parse(savedData);
             }
-            updateUI();
-        } else {
-            switchTab('profile');
+            
+            if (!appData.startWeight || !appData.targetWeight || !appData.height) {
+                switchTab('profile', document.getElementById('nav-profile'));
+                document.getElementById('fab-btn').style.display = 'none';
+            } else {
+                // אכלוס טופס הפרופיל
+                document.getElementById('setup-name').value = appData.name || '';
+                document.getElementById('setup-gender').value = appData.gender || 'male';
+                document.getElementById('setup-height').value = appData.height || '';
+                document.getElementById('setup-start').value = appData.startWeight || '';
+                document.getElementById('setup-target').value = appData.targetWeight || '';
+                
+                if(appData.photo) setPhotoUI(appData.photo);
+
+                // ניהול תפריט: הסתר פרופיל, הצג קלוריות
+                document.getElementById('nav-profile').classList.add('hidden');
+                document.getElementById('nav-calories').classList.remove('hidden');
+
+                updateDashboard();
+                initChart();
+                renderHistoryList();
+            }
         }
-    }
 
-    function saveProfile() {
-        appData.name = document.getElementById('p-name').value;
-        appData.height = parseFloat(document.getElementById('p-height').value);
-        appData.startWeight = parseFloat(document.getElementById('p-start').value);
-        appData.targetWeight = parseFloat(document.getElementById('p-target').value);
-        
-        if (appData.history.length === 0) {
-            appData.history.push({ date: getToday(), weight: appData.startWeight });
+        function saveProfile() {
+            const name = document.getElementById('setup-name').value;
+            const gender = document.getElementById('setup-gender').value;
+            const height = parseFloat(document.getElementById('setup-height').value);
+            const start = parseFloat(document.getElementById('setup-start').value);
+            const target = parseFloat(document.getElementById('setup-target').value);
+            
+            if (isNaN(height) || isNaN(start) || isNaN(target) || start <= target) {
+                alert('יש להזין נתונים תקינים. המשקל ההתחלתי חייב להיות גבוה ממשקל היעד.');
+                return;
+            }
+
+            appData.name = name; appData.gender = gender; appData.height = height;
+            appData.startWeight = start; appData.targetWeight = target;
+            
+            const today = getTodayStr();
+            if (appData.history.length === 0) {
+                appData.history.push({ date: today, weight: start });
+            }
+            
+            saveToStorage();
+            
+            document.getElementById('nav-profile').classList.add('hidden');
+            document.getElementById('nav-calories').classList.remove('hidden');
+            
+            updateDashboard();
+            initChart();
+            renderHistoryList();
+            switchTab('dashboard', document.getElementById('nav-dashboard'));
         }
-        
-        localStorage.setItem('healthTrackerDataV2', JSON.stringify(appData));
-        document.getElementById('profile-nav-item').style.display = 'none';
-        updateUI();
-        switchTab('dashboard');
-    }
 
-    function handlePhoto(input) {
-        if (input.files && input.files[0]) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                appData.photo = e.target.result;
-                document.getElementById('profile-img-preview').src = e.target.result;
-                document.getElementById('profile-img-preview').style.display = 'block';
-                document.getElementById('photo-placeholder').style.display = 'none';
-            };
-            reader.readAsDataURL(input.files[0]);
+        function handlePhoto(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    appData.photo = e.target.result;
+                    setPhotoUI(e.target.result);
+                    saveToStorage();
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
         }
-    }
 
-    function addCalories(type) {
-        const val = parseFloat(document.getElementById('input-cal-' + type).value) || 0;
-        const today = getToday();
-        if (!appData.calories[today]) appData.calories[today] = { in: 0, out: 0 };
-        appData.calories[today][type] += val;
-        
-        localStorage.setItem('healthTrackerDataV2', JSON.stringify(appData));
-        document.getElementById('input-cal-' + type).value = '';
-        updateUI();
-        alert('נוסף בהצלחה!');
-    }
-
-    function updateUI() {
-        const today = getToday();
-        const currentWeight = appData.history.length > 0 ? appData.history[appData.history.length-1].weight : appData.startWeight;
-        
-        // גרסה וברכת שלום
-        document.getElementById('greeting').innerText = `היי ${appData.name}! 👋`;
-        
-        // תמונה
-        if (appData.photo) {
-            const imgHtml = `<img src="${appData.photo}">`;
-            document.getElementById('dash-photo').innerHTML = imgHtml;
-            document.getElementById('profile-img-preview').src = appData.photo;
+        function setPhotoUI(src) {
+            document.getElementById('profile-img-preview').src = src;
             document.getElementById('profile-img-preview').style.display = 'block';
-            document.getElementById('photo-placeholder').style.display = 'none';
+            document.getElementById('profile-photo-icon').style.display = 'none';
+            
+            document.getElementById('dash-photo').src = src;
+            document.getElementById('dash-photo').style.display = 'block';
+            document.getElementById('dash-photo-icon').style.display = 'none';
         }
 
-        // בר התקדמות
-        const totalToLose = appData.startWeight - appData.targetWeight;
-        const lostSoFar = appData.startWeight - currentWeight;
-        const percent = Math.min(Math.max((lostSoFar / totalToLose) * 100, 0), 100);
-        document.getElementById('main-progress-fill').style.width = percent + '%';
-        document.getElementById('progress-text').innerText = Math.round(percent) + '% מהדרך הושלמו';
+        function addCalories(type) {
+            const val = parseFloat(document.getElementById('input-cal-' + type).value);
+            if(isNaN(val) || val <= 0) return;
 
-        // קלוריות יומיות
-        const todaysCals = appData.calories[today] || { in: 0, out: 0 };
-        document.getElementById('dash-cal-in').innerText = todaysCals.in;
-        document.getElementById('dash-cal-out').innerText = todaysCals.out;
+            const today = getTodayStr();
+            if(!appData.calories[today]) appData.calories[today] = { in: 0, out: 0 };
+            
+            appData.calories[today][type] += val;
+            saveToStorage();
+            
+            document.getElementById('input-cal-' + type).value = '';
+            updateDashboard();
+            updateChart();
+        }
 
-        // BMI
-        if (appData.height > 0) {
+        function getTodayStr() {
+            const today = new Date();
+            return today.getDate().toString().padStart(2, '0') + '/' + (today.getMonth() + 1).toString().padStart(2, '0');
+        }
+
+        function saveToStorage() { localStorage.setItem('weightTrackerPremiumOriginal', JSON.stringify(appData)); }
+
+        function getCurrentWeight() {
+            if (appData.history.length === 0) return appData.startWeight;
+            return appData.history[appData.history.length - 1].weight;
+        }
+
+        function updateDashboard() {
+            if (!appData.startWeight) return;
+
+            // שם
+            document.getElementById('user-name-display').innerText = appData.name || 'אורח';
+
+            const current = getCurrentWeight();
+            
+            // חישובים למעגל ולפס התקדמות
+            let remaining = current - appData.targetWeight;
+            if (remaining < 0) remaining = 0;
+            const lost = appData.startWeight - current;
+            const totalToLose = appData.startWeight - appData.targetWeight;
+            let progressPercent = (lost / totalToLose) * 100;
+            if(progressPercent < 0) progressPercent = 0;
+            if(progressPercent > 100) progressPercent = 100;
+
+            document.getElementById('remaining-weight').innerText = remaining.toFixed(1);
+            document.getElementById('current-weight-val').innerText = current.toFixed(1);
+            document.getElementById('lost-val').innerText = lost.toFixed(1);
+            document.getElementById('target-val').innerText = appData.targetWeight;
+
+            // מעגל (היקף 345)
+            const circle = document.getElementById('progress-circle');
+            const circumference = 345; 
+            const offset = circumference - (progressPercent / 100) * circumference;
+            setTimeout(() => { circle.style.strokeDashoffset = offset; }, 100);
+
+            // פס קווי
+            document.getElementById('linear-progress').style.width = progressPercent + '%';
+            document.getElementById('progress-percent-text').innerText = Math.round(progressPercent) + '% הושלמו';
+
+            // BMI
             const hM = appData.height / 100;
-            const bmi = currentWeight / (hM * hM);
-            const bmiPos = Math.min(Math.max(((bmi - 15) / 20) * 100, 0), 100);
-            document.getElementById('bmi-pointer').style.right = bmiPos + '%';
-            document.getElementById('bmi-desc').innerText = `BMI נוכחי: ${bmi.toFixed(1)}`;
+            const bmi = current / (hM * hM);
+            let statusText, statusColor;
+            if (bmi < 18.5) { statusText = 'תת-משקל'; statusColor = '#3498db'; }
+            else if (bmi < 25) { statusText = 'תקין'; statusColor = '#2ecc71'; }
+            else if (bmi < 30) { statusText = 'עודף משקל'; statusColor = '#f1c40f'; }
+            else { statusText = 'השמנה'; statusColor = '#e74c3c'; }
+
+            const bmiTextEl = document.getElementById('bmi-status-text');
+            bmiTextEl.innerText = `BMI: ${bmi.toFixed(1)} (${statusText})`;
+            bmiTextEl.style.color = statusColor;
+
+            const clampedBmi = Math.min(Math.max(bmi, 15), 40);
+            const bmiPercent = ((clampedBmi - 15) / 25) * 100;
+            document.getElementById('bmi-marker').style.right = `calc(${bmiPercent}% - 1.5px)`;
+
+            // קלוריות היום
+            const todayStr = getTodayStr();
+            const calToday = appData.calories[todayStr] || {in:0, out:0};
+            document.getElementById('dash-cal-in').innerText = calToday.in + ' קק"ל';
+            document.getElementById('dash-cal-out').innerText = calToday.out + ' קק"ל';
+
+            buildRoadmap(lost, totalToLose);
         }
 
-        initAdvancedChart();
-    }
+        function addWeightEntry() {
+            const val = parseFloat(document.getElementById('new-weight-input').value);
+            if (isNaN(val) || val <= 0) { alert('אנא הזן משקל תקין'); return; }
 
-    function initAdvancedChart() {
-        const ctx = document.getElementById('advancedChart').getContext('2d');
-        if (window.myChart) window.myChart.destroy();
-
-        const labels = appData.history.map(h => h.date).slice(-7);
-        const weightData = appData.history.map(h => h.weight).slice(-7);
-        const calData = labels.map(date => {
-            const day = appData.calories[date] || { in: 0, out: 0 };
-            return day.in - day.out;
-        });
-
-        window.myChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: [
-                    {
-                        label: 'מאזן קלורי',
-                        data: calData,
-                        backgroundColor: 'rgba(255, 152, 0, 0.5)',
-                        yAxisID: 'y1'
-                    },
-                    {
-                        label: 'משקל',
-                        data: weightData,
-                        type: 'line',
-                        borderColor: '#4CAF50',
-                        yAxisID: 'y'
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: { type: 'linear', position: 'left', title: { display: true, text: 'ק"ג' } },
-                    y1: { type: 'linear', position: 'right', grid: { drawOnChartArea: false }, title: { display: true, text: 'קלוריות' } }
-                }
+            const dateStr = getTodayStr();
+            const lastEntry = appData.history[appData.history.length - 1];
+            if (lastEntry && lastEntry.date === dateStr) {
+                lastEntry.weight = val; 
+            } else {
+                appData.history.push({ date: dateStr, weight: val });
             }
-        });
-    }
 
-    function openWeightModal() {
-        const weight = prompt("מה המשקל היום?");
-        if (weight) {
-            appData.history.push({ date: getToday(), weight: parseFloat(weight) });
-            localStorage.setItem('healthTrackerDataV2', JSON.stringify(appData));
-            updateUI();
+            saveToStorage();
+            updateDashboard();
+            updateChart();
+            renderHistoryList();
+            closeModal();
         }
-    }
 
-    function switchTab(tabId, el) {
-        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-        document.getElementById('tab-' + tabId).classList.add('active');
-        if (el) el.classList.add('active');
-        
-        // הסתרת פאב במסכים מסוימים
-        document.getElementById('fab-weight').style.display = (tabId === 'dashboard' || tabId === 'analytics') ? 'flex' : 'none';
-    }
+        function initChart() {
+            if (chartInstance) chartInstance.destroy();
+            const ctx = document.getElementById('weightChart').getContext('2d');
+            
+            // לוקח את 10 הימים האחרונים
+            const recentHistory = appData.history.slice(-10);
+            const labels = recentHistory.map(entry => entry.date);
+            const weightData = recentHistory.map(entry => entry.weight);
+            
+            // חישוב מאזן קלורי נטו לאותם ימים (הכנסה פחות הוצאה)
+            const calData = labels.map(date => {
+                const c = appData.calories[date];
+                return c ? (c.in - c.out) : 0;
+            });
 
-    function getToday() {
-        const d = new Date();
-        return `${d.getDate()}/${d.getMonth() + 1}`;
-    }
+            chartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'משקל',
+                            data: weightData,
+                            borderColor: '#4CAF50',
+                            backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                            borderWidth: 3,
+                            pointBackgroundColor: '#4CAF50',
+                            pointRadius: 4,
+                            fill: true,
+                            tension: 0.3,
+                            yAxisID: 'y'
+                        },
+                        {
+                            label: 'מאזן קלוריות (נטו)',
+                            data: calData,
+                            type: 'bar',
+                            backgroundColor: 'rgba(255, 152, 0, 0.4)',
+                            borderRadius: 4,
+                            yAxisID: 'y1'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: { 
+                            position: 'right',
+                            suggestedMin: appData.targetWeight - 2, 
+                            suggestedMax: appData.startWeight + 2,
+                            title: {display: true, text: 'ק"ג'}
+                        },
+                        y1: {
+                            position: 'left',
+                            grid: { drawOnChartArea: false },
+                            title: {display: true, text: 'קלוריות'}
+                        }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
 
-    window.onload = loadData;
-</script>
+        function updateChart() {
+            initChart(); // קל יותר לצייר מחדש בגלל המערכים המשולבים
+        }
 
+        function renderHistoryList() {
+            const container = document.getElementById('history-container');
+            container.innerHTML = '';
+            
+            if (appData.history.length === 0) return;
+
+            for (let i = appData.history.length - 1; i >= 0; i--) {
+                const entry = appData.history[i];
+                let diffHtml = '';
+
+                if (i > 0) {
+                    const diff = entry.weight - appData.history[i - 1].weight;
+                    if (diff < 0) diffHtml = `<span class="history-diff diff-down">${Math.abs(diff).toFixed(1)} ↓</span>`;
+                    else if (diff > 0) diffHtml = `<span class="history-diff diff-up">${diff.toFixed(1)} ↑</span>`;
+                    else diffHtml = `<span class="history-diff diff-none">ללא שינוי</span>`;
+                } else {
+                    diffHtml = `<span class="history-diff diff-none">בסיס</span>`;
+                }
+
+                container.innerHTML += `
+                    <div class="history-item">
+                        <span class="history-date">${entry.date}</span>
+                        <span class="history-weight">${entry.weight.toFixed(1)}</span>
+                        ${diffHtml}
+                    </div>
+                `;
+            }
+        }
+
+        function buildRoadmap(lostSoFar, totalToLose) {
+            const container = document.getElementById('milestones-container');
+            container.innerHTML = '';
+            
+            const milestones = [
+                { title: 'הצעד הראשון', desc: 'התחלת את המסע שלך!', req: 0 },
+                { title: 'ירידה ראשונה', desc: 'ירדת את הקילוגרם הראשון', req: 1 },
+                { title: 'רבע מהדרך', desc: 'השלמת 25% מהיעד', req: totalToLose * 0.25 },
+                { title: 'חצי הדרך!', desc: 'הגעת ל-50% מהיעד שלך!', req: totalToLose * 0.5 },
+                { title: 'ישורת אחרונה', desc: 'השלמת 75% מהיעד', req: totalToLose * 0.75 },
+                { title: 'מטרה הושגה!', desc: 'הגעת למשקל היעד שלך!', req: totalToLose }
+            ];
+
+            milestones.forEach(m => {
+                const achieved = lostSoFar >= m.req;
+                container.innerHTML += `
+                    <div class="milestone ${achieved ? 'achieved' : ''}">
+                        <h4>${m.title}</h4><p>${m.desc}</p>
+                    </div>`;
+            });
+        }
+
+        function switchTab(tabId, element) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById('tab-' + tabId).classList.add('active');
+            if(element) element.classList.add('active');
+            
+            const fab = document.getElementById('fab-btn');
+            if ((tabId === 'dashboard' || tabId === 'analytics' || tabId === 'journey') && appData.startWeight) {
+                fab.style.display = 'flex';
+                if(tabId === 'dashboard') updateDashboard();
+            } else {
+                fab.style.display = 'none';
+            }
+        }
+
+        function openModal() {
+            document.getElementById('weight-modal').style.display = 'flex';
+            const input = document.getElementById('new-weight-input');
+            input.value = getCurrentWeight();
+            setTimeout(() => input.focus(), 100); 
+        }
+
+        function closeModal() { document.getElementById('weight-modal').style.display = 'none'; }
+
+        window.onload = loadData;
+    </script>
 </body>
 </html>
